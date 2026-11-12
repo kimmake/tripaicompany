@@ -5,16 +5,6 @@ import SectionLabel from './ui/SectionLabel';
 import SplitLines from './ui/SplitLines';
 import VideoPlayer from './ui/VideoPlayer';
 
-/* 영상 속 화면 문구 (음성 해설 대신 텍스트로 확인할 수 있도록 제공) */
-const FILM_TEXT = [
-  { t: '0:00', text: '이번 여행, 어디로 떠나지?' },
-  { t: '0:08', text: 'TripAI — 여행의 고민을 설렘으로.' },
-  { t: '0:12', text: '여행 예산 100만 원 · 여행 기간 4박 5일 · 여행 스타일 자연과 휴식 · 선호 활동 맛집 탐방 — 취향 분석' },
-  { t: '0:20', text: '세계 지도 위에서 조건에 맞는 여행지를 탐색하고, 후보 여행지 카드를 비교' },
-  { t: '0:26', text: '수많은 여행지 중, 나에게 맞는 여행을.' },
-  { t: '0:30', text: 'TripAI 맞춤 여행 보고서 — 추천 여행지, 예산, 여행 스타일, 추천 일정, 여행 정보' },
-  { t: '0:36', text: 'TripAI — 당신의 취향이 여행이 되는 순간.' },
-];
 
 /**
  * SECTION — BRAND FILM · Our First Journey
@@ -67,17 +57,6 @@ export default function BrandFilmSection() {
             ctaLabel="TripAI 필름 보기"
           />
         </div>
-        <details className="film-text" data-reveal="fade">
-          <summary>영상 속 문구 텍스트로 보기</summary>
-          <ol>
-            {FILM_TEXT.map((l) => (
-              <li key={l.t}>
-                <time>{l.t}</time>
-                <span>{l.text}</span>
-              </li>
-            ))}
-          </ol>
-        </details>
       </div>
     </section>
   );
