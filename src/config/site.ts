@@ -26,13 +26,15 @@ export const service = {
 
 /**
  * 섹션 노출 설정. (Hero는 항상 표시)
- * 공개: About Anywhere → Brand Film(TripAI) → Our Vision
+ * 공개: Hero → (구름 통과) → About Anywhere → Brand Film(TripAI) → Our Vision
  * 이전 TripAI 서비스 홈페이지용 섹션(about, problem, approach, technology, vision, contact)은 코드에 보존되어 있으며
  * 값을 true로 바꾸면 다시 노출됩니다.
  */
 export const sections = {
-  /** About Anywhere — 기업 소개 (id: anywhere) */
-  aboutAnywhere: true,
+  /** Hero → 구름 속 → 구름 위 About Anywhere 로 이어지는 스크롤 여행 (About 앵커 id: anywhere) */
+  skyJourney: true,
+  /** 이전 About Anywhere 섹션 (타이포그래피형) — skyJourney로 대체되어 보존·숨김 */
+  aboutAnywhere: false,
   /** Our Vision — 기업 비전 (id: our-vision) */
   visionAnywhere: true,
   about: false,

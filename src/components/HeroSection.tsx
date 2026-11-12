@@ -88,12 +88,7 @@ export default function HeroSection() {
         };
       });
 
-      // 데스크톱 스크롤 패럴랙스: 먼 하늘은 더 많이, 가까운 날개는 덜 움직임 (로고는 고정)
-      mm.add(MQ.desktopMotion, () => {
-        const st = { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true };
-        gsap.to(q('.par-sky'), { yPercent: 10, ease: 'none', scrollTrigger: st });
-        gsap.to(q('.par-wing'), { yPercent: 7, ease: 'none', scrollTrigger: st });
-      });
+      // 스크롤에 따른 카메라 이동은 SkyJourney(구름 진입 전환)에서 담당합니다.
     },
     { scope: root },
   );
