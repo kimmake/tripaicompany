@@ -9,13 +9,15 @@ export const aboutPage = {
     title: 'About Anywhere — 여행을 바라보는 새로운 시선',
     description: 'Anywhere는 AI 기술과 실제 여행 경험을 연결해, 각자에게 어울리는 여행을 더 쉽게 발견할 수 있도록 돕는 트래블테크 스타트업입니다.',
   },
-  hero: { label: 'About Anywhere', title: ['여행을 바라보는', '새로운 시선.'], lead: '같은 목적지라도, 모두의 여행은 다르니까.' },
+  // 메인 About 헤드라인과 겹치지 않도록, 메인에서 쓰지 않는 문구를 제목으로 사용
+  hero: { label: 'About Anywhere', title: ['같은 목적지라도,', '모두의 여행은 다르니까.'] },
   company: {
     label: 'Who We Are',
     title: 'Anywhere는 어떤 회사인가요',
+    // 메인 About 본문 문장을 그대로 반복하지 않도록 회사 정체성만 짧게
     body: [
-      'Anywhere는 AI 기술과 실제 여행 경험을 연결해, 각자에게 어울리는 여행을 더 쉽게 발견할 수 있도록 돕는 트래블테크 스타트업입니다.',
-      '첫 번째 서비스이자 핵심 서비스인 TripAI를 개발하고 있습니다.',
+      'Anywhere는 여행을 준비하는 과정의 복잡함을 덜고, 사람마다 다른 여행을 존중하는 트래블테크 스타트업입니다.',
+      '지금은 첫 번째 서비스이자 핵심 서비스인 TripAI를 개발하고 있습니다.',
     ],
   },
   values: {
@@ -28,6 +30,12 @@ export const aboutPage = {
       { en: 'Discovery', ko: '새로운 가능성의 발견', desc: '몰랐던 여행지와 경험을 발견하는 즐거움을 소중히 여깁니다.' },
     ],
   },
+  // 메인 Our Vision(헤드라인·첫 문장)과 겹치지 않도록, 메인에 없는 문장만 사용
+  vision: {
+    label: 'Our Vision',
+    title: '우리가 만들어가고 싶은 것',
+    body: ['TripAI를 통해 여행자의 경험과 AI 기술을 연결하고, 여행을 계획하는 과정부터 새로운 목적지를 발견하는 순간까지 더 나은 선택을 돕겠습니다.'],
+  },
 } as const;
 
 export const tripaiPage = {
@@ -35,7 +43,8 @@ export const tripaiPage = {
     title: 'TripAI — Anywhere의 AI 맞춤형 여행 추천 서비스',
     description: 'TripAI는 여행자의 취향과 조건을 바탕으로 개인에게 어울리는 여행지를 추천하는 AI 기반 여행 플랫폼입니다. Anywhere가 개발하고 있습니다.',
   },
-  hero: { label: 'Service 01 — TripAI', title: ['당신의 취향이', '여행이 되는 순간.'], lead: '여행자의 취향과 조건을 바탕으로, 개인에게 어울리는 여행지를 추천하는 AI 기반 여행 플랫폼입니다.' },
+  // 메인 필름 설명과 겹치지 않도록 리드 문장 없이 슬로건만
+  hero: { label: 'Service 01 — TripAI', title: ['당신의 취향이', '여행이 되는 순간.'] },
   intro: {
     label: 'About TripAI',
     title: '나에게 맞는 여행을 더 쉽게',
@@ -44,23 +53,15 @@ export const tripaiPage = {
       '유명한 여행지를 나열하기보다, 여행자 각자의 상황과 취향에 맞는 선택을 돕는 것을 목표로 합니다.',
     ],
   },
-  features: {
-    label: 'Key Features',
-    title: '개발하고 있는 주요 기능',
-    note: '아래 기능은 현재 개발 중이거나 지향하는 방향이며, 실제 제공 범위는 서비스 상황에 따라 달라질 수 있습니다.',
-    items: [
-      { title: '취향과 조건 입력', desc: '여행 예산, 기간, 여행 스타일, 선호 활동 등 여행자의 조건을 바탕으로 여행 성향을 파악합니다.' },
-      { title: '여행지 탐색', desc: '여행자의 조건과 여행 정보를 연결해 어울리는 여행지 후보를 찾습니다.' },
-      { title: '맞춤 여행 보고서', desc: '추천 여행지와 관련 정보를 개인에게 맞춘 여행 보고서 형태로 정리하는 것을 목표로 합니다.' },
-    ],
-  },
+  // 주요 기능과 추천 방식은 같은 3단계를 설명하므로 한 섹션으로 통합
   how: {
     label: 'How It Works',
-    title: '개인 맞춤형 추천 방식',
+    title: '주요 기능과 추천 방식',
+    note: '아래 기능은 현재 개발 중이거나 지향하는 방향이며, 실제 제공 범위는 서비스 상황에 따라 달라질 수 있습니다.',
     steps: [
-      { no: '01', en: 'Understand', ko: '여행자를 이해합니다', desc: '예산, 여행 기간, 여행 취향을 파악합니다.' },
-      { no: '02', en: 'Discover', ko: '가능성을 발견합니다', desc: '조건에 맞는 여행지를 탐색합니다.' },
-      { no: '03', en: 'Recommend', ko: '나에게 맞는 여행을 제안합니다', desc: '맞춤형 여행지와 여행 정보를 제공합니다.' },
+      { no: '01', en: 'Understand', ko: '취향과 조건을 이해합니다', desc: '여행 예산, 기간, 여행 스타일, 선호 활동 등을 바탕으로 여행 성향을 파악합니다.' },
+      { no: '02', en: 'Discover', ko: '어울리는 여행지를 찾습니다', desc: '여행자의 조건과 여행 정보를 연결해 어울리는 여행지 후보를 탐색합니다.' },
+      { no: '03', en: 'Recommend', ko: '맞춤 여행 보고서로 제안합니다', desc: '추천 여행지와 관련 정보를 개인에게 맞춘 여행 보고서 형태로 정리하는 것을 목표로 합니다.' },
     ],
   },
   experience: {
@@ -74,7 +75,8 @@ export const tripaiPage = {
   next: {
     label: "What's Next",
     title: '앞으로의 방향',
-    body: ['실제 사용자의 의견을 바탕으로 추천 경험을 개선하고, 더 편리하고 개인화된 여행 서비스를 만들어가고자 합니다.'],
+    // /about 여정 03과 같은 문장이 되지 않도록 서비스 관점으로 작성
+    body: ['TripAI는 지금도 만들어지고 있는 서비스입니다. 여행자들이 직접 사용하며 남겨 주는 의견을 하나씩 반영해, 추천이 조금씩 더 나에게 맞아지도록 다듬어 가겠습니다.'],
   },
 } as const;
 
@@ -83,13 +85,11 @@ export const teamPage = {
     title: 'Our Team — 여행의 새로운 경험을 만드는 사람들 | Anywhere',
     description: '서로 다른 생각과 시선을 모아, Anywhere의 첫 번째 서비스 TripAI를 만들어가는 Anywhere 팀을 소개합니다.',
   },
-  hero: { label: 'Our Team', title: ['여행의 새로운 경험을', '만드는 사람들.'], lead: '서로 다른 생각과 시선을 모아, Anywhere의 첫 번째 서비스 TripAI를 만들어갑니다.' },
+  // 메인 Our Team 문구(헤드라인·본문)와 겹치지 않도록
+  hero: { label: 'Our Team', title: ['함께 만들어가는', '여정.'] },
   intro: {
     label: 'The Team',
-    title: '함께 만들어가는 여정',
-    body: [
-      'Anywhere 팀은 여행을 바라보는 서로 다른 생각과 시선을 모아 TripAI를 만들고 있습니다.',
-      '사람마다 다른 여행의 취향과 경험에 주목하며, 더 나은 여행 선택을 돕는 서비스를 고민합니다.',
-    ],
+    title: 'Anywhere 팀',
+    body: ['사람마다 다른 여행의 취향과 경험에 주목하며, 더 나은 여행 선택을 돕는 서비스를 고민합니다.'],
   },
 } as const;

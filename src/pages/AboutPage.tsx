@@ -1,24 +1,19 @@
 import PageHero from '../components/PageHero';
 import DetailSection from '../components/DetailSection';
 import StorySection from '../components/StorySection';
-import AnywhereVisionSection from '../components/AnywhereVisionSection';
-import LinkButton from '../components/ui/LinkButton';
 import { aboutPage as c } from '../content/pages';
 import { usePageMeta } from '../lib/router';
 
-/** /about — 회사 소개 · 가치 · 시작 배경과 여정(Our Story & Journey) · 앞으로의 방향(Vision) */
+/** /about — 회사 소개 · 가치 · 비전 · 시작 배경과 여정(Our Story & Journey) */
 export default function AboutPage() {
   usePageMeta(c.meta.title, c.meta.description);
   return (
     <>
-      <PageHero label={c.hero.label} title={c.hero.title} lead={c.hero.lead} />
+      <PageHero label={c.hero.label} title={c.hero.title} />
       <DetailSection label={c.company.label} title={c.company.title}>
         {c.company.body.map((p) => (
           <p key={p}>{p}</p>
         ))}
-        <div className="dp-actions">
-          <LinkButton to="/tripai">Explore TripAI</LinkButton>
-        </div>
       </DetailSection>
       <DetailSection label={c.values.label} title={c.values.title}>
         <ul className="dp-values">
@@ -31,9 +26,13 @@ export default function AboutPage() {
           ))}
         </ul>
       </DetailSection>
-      {/* Our Story & Journey (메인에서 옮김) → 앞으로의 방향(Our Vision 전문)으로 이어짐 */}
+      <DetailSection label={c.vision.label} title={c.vision.title} tone="soft">
+        {c.vision.body.map((p) => (
+          <p key={p}>{p}</p>
+        ))}
+      </DetailSection>
+      {/* Our Story & Journey (메인에서 옮김)로 마무리 — 메인 Our Vision 장면은 반복하지 않음 */}
       <StorySection />
-      <AnywhereVisionSection />
     </>
   );
 }

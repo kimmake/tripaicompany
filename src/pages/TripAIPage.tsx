@@ -7,12 +7,12 @@ import { service } from '../config/site';
 import { tripaiPage as c } from '../content/pages';
 import { usePageMeta } from '../lib/router';
 
-/** /tripai — 서비스 소개 · 주요 기능(개발 중) · 추천 방식 · 경험 기반 정보 · 영상 · 향후 방향 */
+/** /tripai — 서비스 소개 · 영상 · 주요 기능과 추천 방식(개발 중) · 경험 기반 정보 · 앞으로의 방향 */
 export default function TripAIPage() {
   usePageMeta(c.meta.title, c.meta.description);
   return (
     <>
-      <PageHero label={c.hero.label} title={c.hero.title} lead={c.hero.lead} />
+      <PageHero label={c.hero.label} title={c.hero.title} />
       <DetailSection label={c.intro.label} title={c.intro.title}>
         {c.intro.body.map((p) => (
           <p key={p}>{p}</p>
@@ -32,21 +32,7 @@ export default function TripAIPage() {
           </div>
         </div>
       </section>
-      <DetailSection label={c.features.label} title={c.features.title}>
-        <ol className="dp-list">
-          {c.features.items.map((f, i) => (
-            <li key={f.title}>
-              <span className="dp-no">{String(i + 1).padStart(2, '0')}</span>
-              <div>
-                <h3>{f.title}</h3>
-                <p>{f.desc}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-        <p className="dp-note">{c.features.note}</p>
-      </DetailSection>
-      <DetailSection label={c.how.label} title={c.how.title} tone="soft">
+      <DetailSection label={c.how.label} title={c.how.title}>
         <ol className="dp-list">
           {c.how.steps.map((s) => (
             <li key={s.no}>
@@ -59,6 +45,7 @@ export default function TripAIPage() {
             </li>
           ))}
         </ol>
+        <p className="dp-note">{c.how.note}</p>
       </DetailSection>
       <DetailSection label={c.experience.label} title={c.experience.title}>
         {c.experience.body.map((p) => (
