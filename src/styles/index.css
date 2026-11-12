@@ -580,6 +580,11 @@
   .hdr.is-scrolled .hdr-in { height: 60px; }
   .hero { height: clamp(600px, 100svh, 860px); }
   .hero-logo { width: min(78vw, 340px); }
+  /* 모바일: 로고를 화면 위쪽(약 1/4 지점)으로 */
+  .hero .hero-inner { align-items: flex-start; padding-top: calc(var(--jh, 100svh) * .27); }
+  /* 모바일 Hero 첫 화면에서는 헤더의 텍스트 로고를 숨김 (스크롤 후 다시 표시) */
+  .hdr .logo-anywhere { transition: opacity .4s var(--ease-brand); }
+  .hdr:not(.is-scrolled) .logo-anywhere { opacity: 0; pointer-events: none; }
   .film-head { align-items: flex-start; text-align: left; }
   .film-head .body br { display: none; }
   .label.center::after { display: none; }
