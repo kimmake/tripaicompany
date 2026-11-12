@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { service, site } from '../config/site';
+import { service, site, motion } from '../config/site';
 import { gsap, useGSAP, MQ } from '../lib/gsap';
 import { onAnchorClick } from '../lib/scroll';
 import { ArrowUp } from './ui/Icons';
@@ -17,6 +17,7 @@ export default function Footer() {
 
   useGSAP(
     () => {
+      if (!motion.sectionMotion) return; // 섹션 애니메이션 끔 (config/site.ts)
       const q = gsap.utils.selector(root);
       const mm = gsap.matchMedia();
       mm.add(MQ.anyMotion, () => {

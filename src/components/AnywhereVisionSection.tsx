@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { motion } from '../config/site';
 import { gsap, useGSAP, MQ } from '../lib/gsap';
 import SectionLabel from './ui/SectionLabel';
 
@@ -12,6 +13,7 @@ export default function AnywhereVisionSection() {
 
   useGSAP(
     () => {
+      if (!motion.sectionMotion) return; // 섹션 애니메이션 끔 (config/site.ts)
       const q = gsap.utils.selector(root);
       const mm = gsap.matchMedia();
 

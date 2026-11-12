@@ -67,3 +67,13 @@ export const archivedNavItems: NavItem[] = [
   { id: 'vision', label: 'Vision' },
   { id: 'contact', label: 'Contact' },
 ];
+
+/**
+ * 모션 설정.
+ * Hero(비행하는 하늘)와 Hero → 구름 → About 전환은 항상 동작합니다.
+ * 그 외 섹션의 스크롤 등장·패럴랙스·경로 드로잉 애니메이션은 sectionMotion 으로 켜고 끕니다.
+ * (false: 모든 내용이 처음부터 그대로 보임. 버튼·링크의 hover 효과는 유지)
+ */
+export const motion = {
+  sectionMotion: false,
+} as const;

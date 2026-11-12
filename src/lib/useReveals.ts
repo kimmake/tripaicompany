@@ -1,4 +1,5 @@
 import { gsap, useGSAP, MQ } from './gsap';
+import { motion } from '../config/site';
 
 /**
  * data-reveal 속성으로 선언된 요소에 섹션 성격에 맞는 진입 모션을 연결합니다.
@@ -9,6 +10,7 @@ import { gsap, useGSAP, MQ } from './gsap';
  */
 export function useReveals() {
   useGSAP(() => {
+    if (!motion.sectionMotion) return; // 섹션 등장 애니메이션 끔 (config/site.ts)
     const mm = gsap.matchMedia();
     mm.add(MQ.anyMotion, () => {
       gsap.utils.toArray<HTMLElement>('[data-reveal="lines"]').forEach((el) => {

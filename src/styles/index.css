@@ -529,7 +529,7 @@
 .st-start { position: absolute; left: -10px; top: -40px; width: 22px; height: 22px; color: var(--color-sky-ink); }
 .st-start svg { width: 100%; height: 100%; fill: rgba(120, 185, 231, .18); stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
 .st-step { position: relative; display: flex; flex-direction: column; gap: 10px; }
-.st-dot { position: absolute; left: -40px; top: 4px; width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid var(--color-sky-ink); background: #F5F3EE; transform: scale(.85); }
+.st-dot { position: absolute; left: -40px; top: 4px; width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid var(--color-sky-ink); background: var(--st-dot-on); }
 .st-tag { font-family: var(--font-label); font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--color-sky-ink); }
 .st-step h3 { margin: 0; font-size: clamp(21px, 1.8vw, 27px); font-weight: 500; letter-spacing: -.035em; line-height: 1.35; color: var(--color-navy); }
 .st-step p { margin: 0; max-width: 520px; font-size: clamp(15px, 1.15vw, 17px); line-height: 1.8; color: #4A5663; }

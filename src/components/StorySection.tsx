@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { motion } from '../config/site';
 import { gsap, ScrollTrigger, useGSAP, MQ } from '../lib/gsap';
 import { story } from '../content/story';
 import { PlaneMark } from './ui/Logo';
@@ -17,6 +18,7 @@ export default function StorySection() {
 
   useGSAP(
     () => {
+      if (!motion.sectionMotion) return; // 섹션 애니메이션 끔 (config/site.ts)
       const q = gsap.utils.selector(root);
       const mm = gsap.matchMedia();
       mm.add(MQ.anyMotion, () => {
@@ -43,7 +45,7 @@ export default function StorySection() {
         q('.st-step').forEach((el) => {
           gsap
             .timeline({ defaults: { ease: 'power3.out' }, scrollTrigger: { trigger: el, start: 'top 68%', toggleActions: 'play none none reverse' } })
-            .to(el.querySelector('.st-dot'), { scale: 1, backgroundColor: 'var(--st-dot-on)', duration: 0.5 })
+            .fromTo(el.querySelector('.st-dot'), { scale: 0.85, backgroundColor: '#F5F3EE' }, { scale: 1, backgroundColor: 'var(--st-dot-on)', duration: 0.5 })
             .from(el.querySelector('.st-tag'), { opacity: 0, y: 10, duration: 0.7 }, 0)
             .from(el.querySelector('h3'), { opacity: 0, y: 18, duration: 0.9 }, 0.08)
             .from(el.querySelector('p'), { opacity: 0, y: 14, duration: 0.9 }, 0.18);
