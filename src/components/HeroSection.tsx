@@ -1,14 +1,22 @@
 import { useRef } from 'react';
-import { gsap, useGSAP, MQ } from '../lib/gsap';
-import { onAnchorClick } from '../lib/scroll';
-import HeroFilmPreview from './HeroFilmPreview';
+import { gsap, ScrollTrigger, useGSAP, MQ } from '../lib/gsap';
 
-const VALUES = ['Personalization', 'Authenticity', 'Simplicity', 'Discovery'];
+const BRAND = 'TripAI';
+
+/* 레이어 이미지 (원본 사진 1장을 분리): 하늘(날개 영역 복원) · 날개(투명 배경) · 구름 안개 2장(가로 반복) */
+const SKY_SRCSET = '/images/hero/sky-1280.webp 1280w, /images/hero/sky-2400.webp 2400w';
+const WING_SRCSET = '/images/hero/wing-1280.webp 1280w, /images/hero/wing-2400.webp 2400w';
+/* 스테이지는 화면을 덮도록 확대되므로 세로 화면에서는 화면 높이의 약 1.6배 폭으로 렌더링됩니다. */
+const SIZES = '(orientation: portrait) 160vh, 100vw';
 
 /**
  * SECTION 01 — HERO
- * 시네마틱 인트로: 밝은 하늘(베일) → 카메라 줌 아웃 → 종이비행기가 경로를 그리며 비행 → 헤드라인 줄 단위 등장 → 슬로건 → 스크롤 유도.
- * 우측 하단에는 브랜드 필름의 한 장면이 작은 창으로 재생됩니다 (HeroFilmPreview).
+ * 비행기 창밖을 바라보는 듯한 첫 화면.
+ *  - 하늘: 아주 느린 전진(줌인)과 뒤로 흘러가는 드리프트
+ *  - 구름 안개 2겹: 서로 다른 속도로 화면을 가로질러 흐름 (원근감) — 이음새 없는 반복
+ *  - 날개: 비행 중의 미세한 상하 진동 (회전 없음)
+ *  - 카메라: 전체 레이어의 미세한 호흡. 모든 반복은 sine 이징 yoyo / 연속 루프라 초기화되는 순간이 없음
+ *  - 중앙: TripAI 워드마크만 부드럽게 등장
  */
 export default function HeroSection() {
   const root = useRef<HTMLElement>(null);
@@ -19,56 +27,49 @@ export default function HeroSection() {
       const mm = gsap.matchMedia();
 
       mm.add(MQ.anyMotion, () => {
-        const path = root.current?.querySelector<SVGPathElement>('.hero-path path') ?? undefined;
-        const len = path?.getTotalLength() ?? 0;
-        if (path) gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
-
-        const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-        tl.to(q('.hero-veil'), { opacity: 0, duration: 2.2, ease: 'power2.inOut' }, 0.1)
-          .fromTo(q('.hero-zoom'), { scale: 1.16, xPercent: 1.5, yPercent: 1 }, { scale: 1.04, xPercent: 0, yPercent: 0, duration: 3.4 }, 0)
-          .from(q('.hero-eyebrow'), { y: 18, opacity: 0, duration: 1.2 }, 1.1)
-          .from(q('.hero-title .mask > span'), { yPercent: 108, opacity: 0, duration: 1.4, stagger: 0.18 }, 1.3)
-          .from(q('.hero-slogan'), { y: 18, opacity: 0, duration: 1.3 }, 2.1)
-          .from(q('.hero-sub'), { y: 18, opacity: 0, duration: 1.3 }, 2.35)
-          .to(path ?? {}, { strokeDashoffset: 0, duration: 2.8, ease: 'power2.inOut' }, 2.2)
-          .from(q('.scroll-cue, .values'), { opacity: 0, duration: 1 }, 2.9)
-          .from(q('.hero-film'), { opacity: 0, y: 24, duration: 1.4 }, 3.2)
-          .from(q('.hero-path .ring'), { opacity: 0, duration: 0.6 }, 4.9);
-
-        // 종이비행기가 선을 그리며 날아가 목적지에 도착 (브랜드 필름의 심볼과 연결)
-        if (path) {
-          tl.fromTo(
-            q('.hero-plane'),
-            { opacity: 0 },
-            {
-              opacity: 1,
-              duration: 2.8,
-              ease: 'power2.inOut',
-              motionPath: { path, align: path, alignOrigin: [0.5, 0.5], autoRotate: true },
-            },
-            2.2,
+        // 인트로: 밝은 하늘 → 카메라가 천천히 자리 잡음 → 워드마크 등장
+        const chars = q('.hero-brand .ch');
+        const mid = (chars.length - 1) / 2;
+        gsap
+          .timeline({ defaults: { ease: 'expo.out' } })
+          .to(q('.hero-veil'), { opacity: 0, duration: 2.4, ease: 'power2.inOut' }, 0.1)
+          .fromTo(q('.hero-cam'), { scale: 1.1 }, { scale: 1, duration: 4.2, ease: 'power3.out' }, 0)
+          .fromTo(
+            chars,
+            { opacity: 0, y: 26, x: (i: number) => (i - mid) * 14 },
+            { opacity: 1, y: 0, x: 0, duration: 2.4, ease: 'power3.out', stagger: { each: 0.07, from: 'center' } },
+            1.2,
           );
-        }
 
-        // 매우 느린 카메라 드리프트
-        gsap.to(q('.hero-drift'), {
-          scale: 1.05,
-          xPercent: -1.6,
-          yPercent: -1,
-          duration: 28,
-          delay: 3,
-          ease: 'sine.inOut',
-          repeat: -1,
-          yoyo: true,
+        // 반복 모션 (모두 transform만 사용)
+        const loops: gsap.core.Tween[] = [
+          // 카메라 전진: 하늘이 아주 느리게 다가오며 뒤쪽(오른쪽)으로 흘러감
+          gsap.fromTo(q('.sky-move'), { scale: 1, xPercent: 0, yPercent: 0 }, { scale: 1.05, xPercent: 1.1, yPercent: -0.6, duration: 34, ease: 'sine.inOut', repeat: -1, yoyo: true }),
+          // 카메라 호흡: 전체 레이어의 미세한 상하 움직임 (날개·하늘 함께)
+          gsap.to(q('.hero-breath'), { yPercent: -0.5, scale: 1.012, duration: 11, ease: 'sine.inOut', repeat: -1, yoyo: true }),
+          // 구름 안개: 먼 층은 느리게, 가까운 층은 조금 빠르게 (한 타일 이동 후 이음새 없이 반복)
+          gsap.fromTo(q('.haze-far'), { xPercent: -100 / 3 }, { xPercent: 0, duration: 150, ease: 'none', repeat: -1 }),
+          gsap.fromTo(q('.haze-near'), { xPercent: -100 / 3 }, { xPercent: 0, duration: 80, ease: 'none', repeat: -1 }),
+          // 날개 진동: 느린 흔들림 + 아주 작은 떨림. 매 반복마다 목표값을 새로 정해 규칙적으로 보이지 않게 함
+          gsap.to(q('.wing-sway'), { y: () => gsap.utils.random(-1.6, 1.6), duration: 1.9, ease: 'sine.inOut', repeat: -1, repeatRefresh: true }),
+          gsap.to(q('.wing-buzz'), { y: () => gsap.utils.random(-0.45, 0.45), duration: 0.22, ease: 'sine.inOut', repeat: -1, repeatRefresh: true }),
+        ];
+
+        // 화면 밖에서는 반복 모션을 멈춰 배터리·CPU 사용을 줄임
+        ScrollTrigger.create({
+          trigger: root.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          onToggle: (self) => loops.forEach((t) => (self.isActive ? t.resume() : t.pause())),
         });
-        gsap.fromTo(q('.hero-path .ring'), { scale: 1, opacity: 0.8, transformOrigin: '50% 50%' }, { scale: 3.2, opacity: 0, duration: 2.8, delay: 5.2, repeat: -1, ease: 'power1.out', immediateRender: false });
       });
 
-      // 데스크톱 전용 패럴랙스: 이미지와 텍스트가 서로 다른 속도로 이동
+      // 데스크톱 스크롤 패럴랙스: 먼 하늘은 더 많이, 가까운 날개는 덜 움직임
       mm.add(MQ.desktopMotion, () => {
         const st = { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true };
-        gsap.to(q('.hero-media'), { yPercent: 14, ease: 'none', scrollTrigger: st });
-        gsap.to(q('.hero-inner'), { yPercent: -22, opacity: 0, ease: 'none', scrollTrigger: st });
+        gsap.to(q('.par-sky'), { yPercent: 10, ease: 'none', scrollTrigger: st });
+        gsap.to(q('.par-wing'), { yPercent: 7, ease: 'none', scrollTrigger: st });
+        gsap.to(q('.hero-inner'), { yPercent: -18, opacity: 0, ease: 'none', scrollTrigger: st });
       });
     },
     { scope: root },
@@ -76,66 +77,57 @@ export default function HeroSection() {
 
   return (
     <section ref={root} className="hero" id="top" aria-labelledby="hero-title">
-      <div className="hero-media" aria-hidden="true">
-        <div className="hero-zoom">
-          <div className="hero-drift">
-            <picture>
-              <source media="(max-width: 767px)" srcSet="/images/hero-sky-m.webp" width={900} height={1600} />
-              <img
-                src="/images/hero-sky.webp"
-                srcSet="/images/hero-sky-1280.webp 1280w, /images/hero-sky.webp 2400w"
-                sizes="100vw"
-                alt=""
-                width={2400}
-                height={1600}
-                fetchPriority="high"
-                decoding="async"
-              />
-            </picture>
+      <div className="hero-stage" aria-hidden="true">
+        <div className="hero-cam">
+          <div className="hero-breath">
+            <div className="hero-layer par-sky">
+              <div className="hero-layer sky-move">
+                <img
+                  className="hero-img"
+                  src="/images/hero/sky-2400.webp"
+                  srcSet={SKY_SRCSET}
+                  sizes={SIZES}
+                  alt=""
+                  width={2400}
+                  height={1594}
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              </div>
+              <div className="haze haze-far" />
+              <div className="haze haze-near" />
+            </div>
+            <div className="hero-layer par-wing">
+              <div className="hero-layer wing-sway">
+                <div className="hero-layer wing-buzz">
+                  <img
+                    className="hero-img"
+                    src="/images/hero/wing-2400.webp"
+                    srcSet={WING_SRCSET}
+                    sizes={SIZES}
+                    alt=""
+                    width={2400}
+                    height={1594}
+                    fetchPriority="high"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div className="hero-shade" aria-hidden="true" />
-      <svg className="hero-path" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <path d="M-40 780 C 280 760, 520 640, 760 560 S 1100 330, 1190 250" />
-        <circle className="ring" cx="1190" cy="250" r="6" />
-        {/* 모션 축소 시에는 목적지에 정지한 상태로 표시 */}
-        <g className="hero-plane" transform="translate(1190 250) rotate(-40)">
-          <g transform="rotate(45) translate(-12 -12)">
-            <path d="M21.5 2.5 2.8 10.2l7.6 3.4 3.4 7.6z" />
-            <path d="M21.5 2.5 10.4 13.6" />
-          </g>
-        </g>
-      </svg>
       <div className="hero-veil" aria-hidden="true" />
 
-      <div className="hero-inner wrap">
-        <p className="hero-eyebrow">TripAI — Where Emotion Meets Intelligence</p>
-        <h1 className="hero-title" id="hero-title">
-          <span className="mask">
-            <span>Travel Beyond</span>
-          </span>
-          <span className="mask">
-            <span>Expectations.</span>
-          </span>
+      <div className="hero-inner">
+        <h1 className="hero-brand" id="hero-title" aria-label={BRAND}>
+          {BRAND.split('').map((c, i) => (
+            <span className="ch" key={i} aria-hidden="true">
+              {c}
+            </span>
+          ))}
         </h1>
-        <p className="hero-slogan">당신의 취향이 여행이 되는 순간.</p>
-        <p className="hero-sub">여행자의 경험과 AI 기술을 연결하여, 더 나다운 여행의 가능성을 만들어갑니다.</p>
-      </div>
-
-      <div className="hero-foot">
-        <div className="wrap">
-          <a className="scroll-cue" href="#about" onClick={(e) => onAnchorClick(e)}>
-            <span className="rail" aria-hidden="true" />
-            Scroll
-          </a>
-          <ul className="values" aria-label="TripAI 핵심 가치">
-            {VALUES.map((v) => (
-              <li key={v}>{v}</li>
-            ))}
-          </ul>
-          <HeroFilmPreview />
-        </div>
       </div>
     </section>
   );

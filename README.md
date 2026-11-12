@@ -45,9 +45,8 @@ src/
   lib/gsap.ts             GSAP 등록, 미디어 조건(MQ)
   lib/useReveals.ts       data-reveal="lines|fade|clip" 진입 모션
   lib/scroll.ts           앵커 이동(부드러운 스크롤 + 포커스 이동)
-  lib/useMediaQuery.ts    미디어 쿼리 구독
   components/
-    Header  HeroSection  HeroFilmPreview  AboutSection  BrandFilmSection
+    Header  HeroSection  AboutSection  BrandFilmSection
     ProblemSection  ApproachSection  TechnologySection  VisionSection
     ContactSection  Footer
     ui/  Logo(종이비행기 심볼)  Icons  SectionLabel  SplitLines  VideoPlayer
@@ -72,7 +71,7 @@ src/
 
 | 섹션 | 모션 |
 | --- | --- |
-| Hero | 밝은 베일 → 카메라 줌아웃 → 종이비행기가 비행 경로를 그리며 이동 → 헤드라인 줄 단위 등장 → 슬로건 → 스크롤 유도. 우측 하단 브랜드 필름 미리보기 창. 데스크톱 패럴랙스 |
+| Hero | 중앙에 TripAI 워드마크만 표시. 사진을 레이어로 분리해 비행 중인 창밖처럼 연출: 하늘의 아주 느린 전진·드리프트, 서로 다른 속도로 흐르는 구름 안개 2겹, 날개의 미세한 진동, 카메라 호흡. 데스크톱 스크롤 패럴랙스(하늘 > 날개) |
 | Brand Film | 진입 시 아래에서 fade + scale (1회). 재생은 사용자 조작으로만, 스크롤 모션과 독립 |
 | About | 사진 clip-path 리빌 + 프레임 내부 패럴랙스 |
 | Problem | 고정 무대에서 정보 과잉 → 개인화 부족 → 준비 복잡성 장면 전환 후 한 줄로 정리 |
@@ -91,22 +90,30 @@ src/
 | --- | --- | --- |
 | `tripai-brand-film-1080p.mp4` | Brand Film 데스크톱 재생 (원본 그대로, fast-start) | 약 12.2MB |
 | `tripai-brand-film-720p.mp4` | Brand Film 모바일 재생 (`<source media="(max-width: 767px)">`) | 약 2.0MB |
-| `tripai-hero-loop.mp4` | Hero 미리보기 루프: 원본 11.0–18.4초, 768×432, 무음, 앞뒤 페이드 | 약 80KB |
 | `brand-film-poster.webp` | Brand Film 포스터 (원본 2.6초 장면) | 약 40KB |
-| `hero-loop-poster.webp` | Hero 미리보기 포스터·자동 재생 차단 시 대체 | 약 9KB |
 
 - Brand Film: `preload="metadata"`, `playsInline`(모바일 자동 전체 화면 방지), 자동 재생 없음. 플레이어가 화면에 가까워지기 전에는 영상 소스를 붙이지 않아 포스터만 받습니다.
 - 플레이어: 재생/일시정지, 탐색, 음소거·볼륨(터치 기기는 음소거 버튼만), 전체 화면(iOS는 동영상 전체 화면), 키보드 Space·K·←→·M·F. 영상 속 화면 문구는 "영상 속 문구 텍스트로 보기"로 제공합니다.
-- Hero 미리보기: 데스크톱 + 모션 허용 환경에서만 `muted`·`playsInline`·`loop` 자동 재생, 화면 밖이거나 탭이 숨겨지면 일시정지. 자동 재생이 차단되거나 모바일·모션 축소 환경에서는 포스터 이미지만 표시하며 영상 파일을 받지 않습니다.
 - 영상을 교체하려면 같은 파일명으로 덮어쓰거나 `src/config/media.ts` 경로를 수정합니다. 다시 인코딩할 때 사용한 명령:
 
 ```bash
 ffmpeg -i TripAI_1080p30.mp4 -vf scale=1280:720 -c:v libx264 -preset slow -crf 25 -tune animation -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart tripai-brand-film-720p.mp4
 ```
 
-```bash
-ffmpeg -ss 11.0 -t 7.4 -i TripAI_1080p30.mp4 -an -vf "scale=768:432,fade=t=in:st=0:d=0.5:color=0xF5F7FD,fade=t=out:st=6.8:d=0.6:color=0xF5F7FD,format=yuv420p" -c:v libx264 -preset slow -crf 27 -tune animation -movflags +faststart tripai-hero-loop.mp4
-```
+
+## Hero 레이어 (`public/images/hero`)
+
+원본 사진 1장(Unsplash)을 분리해 만든 레이어입니다. 모든 레이어는 같은 크기(2400×1594, 1280 버전 포함)라 정확히 겹칩니다.
+
+| 파일 | 내용 |
+| --- | --- |
+| `sky-*.webp` | 하늘 레이어. 날개 영역을 주변 하늘로 복원(inpaint)해, 하늘이 움직여도 날개 뒤에서 빈 공간이 드러나지 않음 |
+| `wing-*.webp` | 날개 레이어(투명 배경, 가장자리 1px 페더) |
+| `haze-far.webp`, `haze-near.webp` | 가로로 이음새 없이 반복되는 구름 안개 텍스처(노이즈로 생성), `mix-blend-mode: screen` |
+
+- 무대(`.hero-stage`)는 사진 비율을 유지한 채 Hero를 덮도록 컨테이너 쿼리 단위로 크기를 정하고 2% 여유를 둡니다. 세로 화면에서는 `--focus-x`로 날개 쪽을 보여줍니다.
+- 반복 모션은 모두 transform만 사용하며, sine 이징 yoyo 또는 한 타일 단위 연속 루프라 초기화되는 순간이 없습니다. Hero가 화면 밖이면 일시정지합니다.
+- `prefers-reduced-motion: reduce` 에서는 모든 모션 없이 정지된 합성 이미지와 워드마크만 표시합니다.
 
 ## 콘텐츠 원칙
 
@@ -119,7 +126,7 @@ ffmpeg -ss 11.0 -t 7.4 -i TripAI_1080p30.mp4 -an -vf "scale=768:432,fade=t=in:st
 
 | 파일 | Unsplash photo |
 | --- | --- |
-| hero-sky* / og-image.jpg | `photo-1436491865332-7a61a109cc05` |
+| hero/sky-*, hero/wing-* / og-image.jpg | `photo-1436491865332-7a61a109cc05` |
 | vision* | `photo-1506905925346-21bda4d32df4` |
 | about-rest | `photo-1507525428034-b723cf961d3e` |
 | about-city | `photo-1538485399081-7191377e8241` |

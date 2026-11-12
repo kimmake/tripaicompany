@@ -25,9 +25,9 @@
     <meta name="twitter:description" content="여행자의 경험과 AI 기술을 연결하여, 더 나다운 여행의 가능성을 만들어갑니다." />
     <meta name="twitter:image" content="__SITE_URL__/og-image.jpg" />
 
-    <!-- 히어로 이미지 우선 로드 (LCP) -->
-    <link rel="preload" as="image" type="image/webp" href="/images/hero-sky-m.webp" media="(max-width: 767px)" fetchpriority="high" />
-    <link rel="preload" as="image" type="image/webp" imagesrcset="/images/hero-sky-1280.webp 1280w, /images/hero-sky.webp 2400w" imagesizes="100vw" media="(min-width: 768px)" fetchpriority="high" />
+    <!-- 히어로 레이어 이미지 우선 로드 (하늘 · 날개) -->
+    <link rel="preload" as="image" type="image/webp" imagesrcset="/images/hero/sky-1280.webp 1280w, /images/hero/sky-2400.webp 2400w" imagesizes="(orientation: portrait) 160vh, 100vw" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/webp" imagesrcset="/images/hero/wing-1280.webp 1280w, /images/hero/wing-2400.webp 2400w" imagesizes="(orientation: portrait) 160vh, 100vw" fetchpriority="high" />
   </head>
   <body>
     <div id="root"></div>

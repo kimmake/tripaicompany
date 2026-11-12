@@ -11,9 +11,3 @@ export const brandFilm = {
   poster: '/videos/brand-film-poster.webp',
   posterSmall: '/videos/brand-film-poster-960.webp',
 } as const;
-
-/** Hero 미리보기 루프: 원본 11.0–18.4초 구간(취향 카드 연결 장면), 768×432, 무음, 약 80KB */
-export const heroLoop = {
-  src: '/videos/tripai-hero-loop.mp4',
-  poster: '/videos/hero-loop-poster.webp',
-} as const;
