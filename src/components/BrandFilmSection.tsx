@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { brandFilm } from '../config/media';
-import { motion } from '../config/site';
+import { service, motion } from '../config/site';
+import { ArrowRight } from './ui/Icons';
 import LinkButton from './ui/LinkButton';
 import { gsap, useGSAP, MQ } from '../lib/gsap';
 import SectionLabel from './ui/SectionLabel';
@@ -62,6 +63,12 @@ export default function BrandFilmSection() {
         </div>
         <div className="film-cta">
           <LinkButton to="/tripai">Explore TripAI</LinkButton>
+          {/* 주 버튼 아래 보조 링크: 실제 서비스(외부, 새 창) */}
+          <a className="text-link" href={service.url} target="_blank" rel="noopener noreferrer">
+            TripAI 바로가기
+            <ArrowRight className="ext" />
+            <span className="sr-only">(새 창에서 열림)</span>
+          </a>
         </div>
       </div>
     </section>

@@ -562,7 +562,7 @@
 }
 @layer components {
 /* ---------- Brand Film: TripAI 서비스 링크 ---------- */
-.film-cta { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 14px 28px; margin-top: clamp(28px, 3.4vw, 44px); }
+.film-cta { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; margin-top: clamp(28px, 3.4vw, 44px); }
 .cta-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 28px; border-radius: 999px; background: var(--color-navy); color: #fff; text-decoration: none; font-size: 15px; font-weight: 500; letter-spacing: -.01em; position: relative; overflow: clip; isolation: isolate; transition: transform .4s var(--ease-brand); }
 .cta-btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--color-sky-ink); transform: translateX(-101%); transition: transform .6s var(--ease-brand); }
 .cta-btn:hover, .cta-btn:focus-visible { color: #fff; }
