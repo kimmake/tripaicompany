@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>TripAI — Travel Beyond Expectations</title>
+    <meta name="description" content="TripAI는 한국인 여행자들의 실제 경험과 여행 정보를 바탕으로 개인의 취향, 예산, 일정을 고려한 맞춤형 여행 추천 경험을 만드는 AI 기반 여행 플랫폼입니다." />
+    <meta name="theme-color" content="#14283F" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="__SITE_URL__/" />
+
+    <!-- Open Graph / Twitter: 이미지는 public/og-image.jpg 를 교체하면 됩니다 (1200×630). -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="TripAI" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:title" content="TripAI — 당신의 취향이 여행이 되는 순간." />
+    <meta property="og:description" content="여행자의 경험과 AI 기술을 연결하여, 더 나다운 여행의 가능성을 만들어갑니다." />
+    <meta property="og:url" content="__SITE_URL__/" />
+    <meta property="og:image" content="__SITE_URL__/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="구름 위를 나는 비행기 날개" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="TripAI — Travel Beyond Expectations" />
+    <meta name="twitter:description" content="여행자의 경험과 AI 기술을 연결하여, 더 나다운 여행의 가능성을 만들어갑니다." />
+    <meta name="twitter:image" content="__SITE_URL__/og-image.jpg" />
+
+    <!-- 히어로 이미지 우선 로드 (LCP) -->
+    <link rel="preload" as="image" type="image/webp" href="/images/hero-sky-m.webp" media="(max-width: 767px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/webp" imagesrcset="/images/hero-sky-1280.webp 1280w, /images/hero-sky.webp 2400w" imagesizes="100vw" media="(min-width: 768px)" fetchpriority="high" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <p style="padding:24px;font-family:sans-serif">TripAI — 당신의 취향이 여행이 되는 순간. 이 웹사이트는 JavaScript를 사용합니다.</p>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
