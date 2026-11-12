@@ -154,6 +154,8 @@ export default function HeroSection() {
             decoding="async"
             fetchPriority="high"
           />
+          {/* 사실에 기반한 회사 정의 한 줄 (Anywhere = AI 트래블테크 스타트업) */}
+          <span className="hero-tag">AI Travel Tech Company</span>
         </h1>
       </div>
     </section>

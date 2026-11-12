@@ -1,5 +1,6 @@
 import PageHero from '../components/PageHero';
 import DetailSection from '../components/DetailSection';
+import SectionLabel from '../components/ui/SectionLabel';
 import VideoPlayer from '../components/ui/VideoPlayer';
 import { ArrowRight } from '../components/ui/Icons';
 import { brandFilm } from '../config/media';
@@ -7,7 +8,7 @@ import { service } from '../config/site';
 import { tripaiPage as c } from '../content/pages';
 import { usePageMeta } from '../lib/router';
 
-/** /tripai — 서비스 소개 · 영상 · 주요 기능과 추천 방식(개발 중) · 경험 기반 정보 · 앞으로의 방향 */
+/** /tripai — 서비스 소개 · 실제 화면 · 영상 · 주요 기능과 추천 방식(개발 중) · 경험 기반 정보 · 앞으로의 방향 */
 export default function TripAIPage() {
   usePageMeta(c.meta.title, c.meta.description);
   return (
@@ -25,6 +26,32 @@ export default function TripAIPage() {
           </a>
         </div>
       </DetailSection>
+      <section className="dp dp-screens" aria-labelledby="sc-title">
+        <div className="wrap">
+          <div className="dp-head sc-head">
+            <SectionLabel reveal={false}>{c.screens.label}</SectionLabel>
+            <h2 className="dp-title" id="sc-title">{c.screens.title}</h2>
+          </div>
+          <div className="sc-grid">
+            {c.screens.items.map((s) => (
+              <figure key={s.src} className={`sc-item${s.kind === 'wide' ? ' is-wide' : ''}`}>
+                <div className={`sc-frame${s.kind === 'phone' ? ' is-phone' : ''}`}>
+                  {s.kind === 'wide' && (
+                    <div className="sc-bar" aria-hidden="true">
+                      <i />
+                      <i />
+                      <i />
+                    </div>
+                  )}
+                  <img src={s.src} alt={`TripAI 화면: ${s.caption}`} width={s.w} height={s.h} loading="lazy" decoding="async" />
+                </div>
+                <figcaption>{s.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+          <p className="sc-note">{c.screens.note}</p>
+        </div>
+      </section>
       <section className="dp dp-film is-soft" aria-label="TripAI 서비스 소개 영상">
         <div className="wrap">
           <div className="film-frame">

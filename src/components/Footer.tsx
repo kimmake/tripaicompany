@@ -71,7 +71,6 @@ export default function Footer() {
           <nav aria-label="푸터 메뉴" className="ft-links">
             <Link to="/about">About</Link>
             <Link to="/tripai">{service.name}</Link>
-            <Link to="/team">Team</Link>
             <a href="#top" onClick={(e) => onAnchorClick(e)}>
               Back to top
               <ArrowUp />

@@ -41,7 +41,7 @@ export const sections = {
   /** 메인에서는 숨김 — /about 페이지에서 사용 */
   story: false,
   /** 메인 Our Team 소개 (자세한 내용은 /team) */
-  teamTeaser: true,
+  teamTeaser: false,
   /** Our Vision — 기업 비전 (id: our-vision) */
   visionAnywhere: true,
   about: false,
@@ -61,7 +61,7 @@ export const pageNav: PageNavItem[] = [
   { to: '/', label: 'Home', note: '비행하는 하늘에서 시작하는 Anywhere' },
   { to: '/about', label: 'About', note: 'Anywhere 소개' },
   { to: '/tripai', label: 'TripAI', note: 'Anywhere의 첫 번째 서비스' },
-  { to: '/team', label: 'Team', note: '여행의 새로운 경험을 만드는 사람들' },
+  // 실제 팀 정보가 준비되면 다시 노출: { to: '/team', label: 'Team', note: '여행의 새로운 경험을 만드는 사람들' },
 ];
 
 /** 현재 공개된 섹션 기준 내비게이션 */

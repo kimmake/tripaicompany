@@ -53,6 +53,17 @@ export const tripaiPage = {
       '유명한 여행지를 나열하기보다, 여행자 각자의 상황과 취향에 맞는 선택을 돕는 것을 목표로 합니다.',
     ],
   },
+  // 실제 서비스(trip-ai-rho.vercel.app) 화면 캡처 — 2026년 11월. 데모 통계가 보이는 영역은 제외
+  screens: {
+    label: 'Service Preview',
+    title: '지금의 TripAI 화면',
+    items: [
+      { src: '/images/tripai/screen-home.webp', w: 1600, h: 956, kind: 'wide', caption: '여행지 탐색 — 세계 지도와 검색' },
+      { src: '/images/tripai/screen-intro.webp', w: 780, h: 1200, kind: 'phone', caption: '나에게 맞는 여행지 찾기' },
+      { src: '/images/tripai/screen-q1.webp', w: 780, h: 1200, kind: 'phone', caption: '여행 취향 질문 (1/8)' },
+    ],
+    note: '실제 TripAI 서비스 화면을 캡처한 이미지입니다(2026년 11월 기준). 개발 중인 서비스로, 화면과 기능은 바뀔 수 있습니다.',
+  },
   // 주요 기능과 추천 방식은 같은 3단계를 설명하므로 한 섹션으로 통합
   how: {
     label: 'How It Works',
