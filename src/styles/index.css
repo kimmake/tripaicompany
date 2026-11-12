@@ -543,6 +543,8 @@
 .st { z-index: 1; }
 /* Vision 상단에 겹쳐, 불투명한 밝은 하늘 → 반투명 안개 → 투명 으로 풀림 (색 띠 없이 저녁 하늘이 드러남) */
 .st-tail { position: relative; height: var(--st-tail); margin-bottom: calc(-1 * var(--st-tail)); background: linear-gradient(180deg, #E6EBF1 0%, rgba(214, 222, 231, .92) 22%, rgba(170, 184, 202, .62) 50%, rgba(110, 126, 150, .25) 78%, rgba(62, 77, 102, 0) 100%); pointer-events: none; }
+.st:has(.st-tail.is-light) { --st-tail: clamp(120px, 16vh, 180px); }
+.st-tail.is-light { margin-bottom: 0; background: linear-gradient(180deg, #E6EBF1 0%, #EDEDF3 50%, #F4EEF2 100%); }
 }
 @layer components {
 /* ---------- Footer: THE JOURNEY CONTINUES ---------- */
@@ -556,7 +558,7 @@
   radial-gradient(60% 80% at 92% 100%, rgba(251, 221, 214, .55), rgba(251, 221, 214, 0) 70%),
   radial-gradient(55% 70% at 70% 10%, rgba(214, 222, 246, .7), rgba(214, 222, 246, 0) 70%),
   linear-gradient(180deg, var(--color-cloud) 0%, #F1F3FA 55%, #F4EEF2 100%); }
-.av.is-light .av-in { padding-top: clamp(96px, 10vw, 140px); padding-bottom: calc(clamp(140px, 18vh, 200px) + clamp(72px, 8vw, 120px)); }
+.av.is-light .av-in { padding-top: clamp(96px, 10vw, 140px); padding-bottom: clamp(96px, 10vw, 150px); }
 /* 위쪽은 앞 섹션 배경색에서 자연스럽게 시작 (곡선·색 번짐 위를 덮는 페이드) */
 .av.is-light::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 38%; z-index: 1; pointer-events: none; background: linear-gradient(180deg, var(--color-cloud) 0%, rgba(248, 250, 252, 0) 100%); }
 .av.is-light .av-in { z-index: 2; }
@@ -577,6 +579,20 @@
 }
 /* Vision 사진이 없을 때: 노을빛 글로우 없이 같은 네이비로 이어짐 */
 .footer.is-plain { background: linear-gradient(180deg, var(--ft-top) 0%, #172840 38%, #122236 100%); }
+/* 밝은 푸터: Our Vision 파스텔 톤을 그대로 이어받음 */
+.footer.is-light { --ft-top: #F4EEF2; color: var(--color-navy); background:
+  radial-gradient(50% 70% at 12% 100%, rgba(214, 222, 246, .55), rgba(214, 222, 246, 0) 70%),
+  linear-gradient(180deg, var(--ft-top) 0%, #F2F1F7 45%, #EEF2F8 100%); }
+.footer.is-light .ft-haze { background: linear-gradient(180deg, rgba(244, 238, 242, 0) 0%, rgba(244, 238, 242, .6) 55%, var(--ft-top) 100%); }
+.footer.is-light .ft-label { color: var(--color-muted); }
+.footer.is-light .ft-msg { color: var(--color-navy); }
+.footer.is-light .ft-sub { color: #4A5663; }
+.footer.is-light .ft-service { color: var(--color-navy); }
+.footer.is-light .ft-service span { color: var(--color-sky-ink); }
+.footer.is-light .ft-service:hover { color: var(--color-sky-ink); }
+.footer.is-light .ft-base { color: var(--color-muted); border-top: 1px solid rgba(20, 40, 63, .1); padding-top: 8px; }
+.footer.is-light .ft-links a { color: #4A5663; }
+.footer.is-light .ft-links a:hover { color: var(--color-navy); }
 /* Our Vision 하단에 겹치는 안개: 투명 → 푸터 시작색 (경계 없이 내려앉음) */
 .ft-haze { position: absolute; left: 0; right: 0; bottom: 100%; height: var(--ft-haze); background: linear-gradient(180deg, rgba(30, 47, 67, 0) 0%, rgba(30, 47, 67, .55) 55%, var(--ft-top) 100%); pointer-events: none; }
 .ft-in { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: clamp(64px, 8vw, 112px); padding-bottom: calc(28px + env(safe-area-inset-bottom)); }

@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { motion } from '../config/site';
+import { motion, visuals } from '../config/site';
 import { gsap, ScrollTrigger, useGSAP, MQ } from '../lib/gsap';
 import { story } from '../content/story';
 import { PlaneMark } from './ui/Logo';
@@ -102,7 +102,8 @@ export default function StorySection() {
         </div>
       </div>
       {/* 밝은 하늘이 옅은 안개처럼 Our Vision의 저녁 하늘 위로 풀리며 이어지는 구간 (Vision 상단에 겹침) */}
-      <div className="st-tail" aria-hidden="true" />
+      {/* 다음 장면(푸터·Vision)이 밝은 톤이면 꼬리도 밝게 이어짐 */}
+      <div className={`st-tail${!visuals.visionPhoto && visuals.visionTone === 'light' ? ' is-light' : ''}`} aria-hidden="true" />
     </section>
   );
 }

@@ -15,6 +15,9 @@ import { ArrowUp } from './ui/Icons';
 export default function Footer() {
   const root = useRef<HTMLElement>(null);
   const year = new Date().getFullYear();
+  // Our Vision이 밝은 톤이면 푸터도 같은 파스텔 톤으로 (네이비 버전은 보존)
+  const light = !visuals.visionPhoto && visuals.visionTone === 'light';
+  const logo = light ? 'anywhere-logo-navy' : 'anywhere-logo';
 
   useGSAP(
     () => {
@@ -38,7 +41,7 @@ export default function Footer() {
   );
 
   return (
-    <footer ref={root} className={`footer${visuals.visionPhoto ? '' : ' is-plain'}`} data-header="dark">
+    <footer ref={root} className={`footer${visuals.visionPhoto ? '' : ' is-plain'}${light ? ' is-light' : ''}`} data-header={light ? undefined : 'dark'}>
       <div className="ft-haze" aria-hidden="true" />
       <div className="wrap ft-in">
         <p className="ft-label">Anywhere · Travel Tech Startup</p>
@@ -48,8 +51,8 @@ export default function Footer() {
         <div className="ft-brand">
           <Link className="ft-logo" to="/" aria-label={`${site.name} 홈으로`}>
             <img
-              src="/images/brand/anywhere-logo-800.webp"
-              srcSet="/images/brand/anywhere-logo-800.webp 800w, /images/brand/anywhere-logo-1600.webp 1600w"
+              src={`/images/brand/${logo}-800.webp`}
+              srcSet={`/images/brand/${logo}-800.webp 800w, /images/brand/${logo}-1600.webp 1600w`}
               sizes="220px"
               alt={site.name}
               width={1745}
