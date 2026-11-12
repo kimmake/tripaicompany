@@ -86,7 +86,7 @@
 .logo:hover .plane { transform: translate(2px, -2px); }
 .logo b { font-weight: 400; color: var(--logo-accent); }
 .logo-anywhere { font-weight: 500; font-size: 21px; letter-spacing: -.035em; }
-.hdr.is-scrolled:not(.is-dark) .logo, .footer .logo { --logo-accent: var(--color-sky-ink); }
+.hdr.is-scrolled:not(.is-dark) .logo { --logo-accent: var(--color-sky-ink); }
 .nav { display: flex; align-items: center; gap: 34px; }
 .nav a { color: inherit; text-decoration: none; font-family: var(--font-label); font-size: 14px; font-weight: 500; position: relative; padding: 12px 0; opacity: .88; transition: opacity .3s; }
 .nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 6px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease-brand); }
@@ -383,19 +383,6 @@
 .notice.err svg { stroke: #A23A33; }
 
 /* ---------- Footer ---------- */
-.footer { border-top: 1px solid var(--line); padding: 64px 0 calc(24px + env(safe-area-inset-bottom)); overflow: clip; }
-.ft-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; flex-wrap: wrap; }
-.ft-brand { display: flex; flex-direction: column; gap: 14px; color: var(--color-navy); }
-.ft-brand p { margin: 0; color: var(--color-muted); font-size: 15px; }
-.ft-nav { display: flex; gap: 28px; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
-.ft-nav a { color: var(--color-ink); text-decoration: none; font-family: var(--font-label); font-size: 14px; display: inline-flex; min-height: 44px; align-items: center; position: relative; }
-.ft-nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 10px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease-brand); }
-.ft-nav a:hover::after { transform: scaleX(1); transform-origin: left; }
-.ft-word { font-family: var(--font-display); font-weight: 300; font-size: clamp(64px, 17vw, 280px); letter-spacing: -.07em; line-height: .8; color: var(--color-navy); margin: 72px 0 0; opacity: .08; user-select: none; white-space: nowrap; }
-.ft-bottom { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 28px; font-size: 13px; color: var(--color-muted); }
-.ft-bottom a { color: var(--color-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
-.ft-bottom a:hover { color: var(--color-navy); }
-.ft-bottom svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; }
 }
 
 
@@ -550,6 +537,29 @@
 /* Vision 상단에 겹쳐, 불투명한 밝은 하늘 → 반투명 안개 → 투명 으로 풀림 (색 띠 없이 저녁 하늘이 드러남) */
 .st-tail { position: relative; height: var(--st-tail); margin-bottom: calc(-1 * var(--st-tail)); background: linear-gradient(180deg, #E6EBF1 0%, rgba(214, 222, 231, .92) 22%, rgba(170, 184, 202, .62) 50%, rgba(110, 126, 150, .25) 78%, rgba(62, 77, 102, 0) 100%); pointer-events: none; }
 }
+@layer components {
+/* ---------- Footer: THE JOURNEY CONTINUES ---------- */
+.footer { --ft-top: #1E2F43; --ft-haze: clamp(140px, 18vh, 200px); position: relative; color: #fff; background:
+  radial-gradient(ellipse 70% 120px at 50% 0%, rgba(255, 196, 160, .07), rgba(255, 196, 160, 0) 100%),
+  linear-gradient(180deg, var(--ft-top) 0%, #172840 38%, #122236 100%); }
+/* Our Vision 하단에 겹치는 안개: 투명 → 푸터 시작색 (경계 없이 내려앉음) */
+.ft-haze { position: absolute; left: 0; right: 0; bottom: 100%; height: var(--ft-haze); background: linear-gradient(180deg, rgba(30, 47, 67, 0) 0%, rgba(30, 47, 67, .55) 55%, var(--ft-top) 100%); pointer-events: none; }
+.ft-in { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: clamp(64px, 8vw, 112px); padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
+.ft-label { margin: 0; font-family: var(--font-label); font-size: 11px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: rgba(255, 255, 255, .62); }
+.ft-msg { margin: 20px 0 0; font-family: var(--font-display); font-weight: 300; font-size: clamp(40px, 6.4vw, 96px); line-height: 1.04; letter-spacing: -.045em; color: #fff; }
+.ft-sub { margin: 16px 0 0; font-size: clamp(15px, 1.3vw, 18px); letter-spacing: -.01em; color: rgba(255, 255, 255, .72); }
+.ft-brand { margin-top: clamp(56px, 7vw, 96px); display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.ft-logo { display: block; line-height: 0; }
+.ft-logo img { display: block; width: clamp(170px, 16vw, 220px); height: auto; aspect-ratio: 1745 / 431; }
+.ft-service { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 4px; color: rgba(255, 255, 255, .9); text-decoration: none; font-family: var(--font-display); font-size: 15px; font-weight: 500; letter-spacing: -.01em; }
+.ft-service span { font-family: var(--font-label); font-size: 10.5px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--color-sky); }
+.ft-service:hover { color: #fff; }
+.ft-base { width: 100%; margin-top: clamp(48px, 6vw, 80px); display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 13px; color: rgba(255, 255, 255, .58); }
+.ft-links { display: flex; align-items: center; gap: 24px; }
+.ft-links a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: rgba(255, 255, 255, .78); text-decoration: none; transition: color .3s; }
+.ft-links a:hover { color: #fff; }
+.ft-links svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+}
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (hover: none) { .range.vol { display: none; } }
 
@@ -616,7 +626,6 @@
   .vi-body { margin-left: 0; }
   .vi-body p { font-size: 16px; }
   .row2 { grid-template-columns: 1fr; }
-  .ft-word { margin-top: 48px; }
 }
 
 /* ============================================================
@@ -661,4 +670,10 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .st-dot { transform: none; background: var(--color-sky-ink); }
+}
+
+@media (max-width: 767px) {
+  .ft-msg { font-size: clamp(38px, 11vw, 46px); }
+  .ft-base { flex-direction: column-reverse; gap: 6px; }
+  .ft-links { gap: 28px; }
 }

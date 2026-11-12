@@ -78,6 +78,7 @@ src/
 | (이전) About Anywhere | 라벨 → 헤드라인(줄 단위 마스크) → 본문(시간차) → 마지막 문장 강조(종이비행기 심볼, TripAI 아래 하늘색 선) 순서로 1회 등장 |
 | Brand Film | 진입 시 아래에서 fade + scale (1회). 재생은 사용자 조작으로만, 스크롤 모션과 독립 |
 | Our Story & Journey | 왼쪽 고정 대형 헤드라인 + 오른쪽 스토리·여정 3단계. 점선 위로 실선 경로가 스크롤에 맞춰 그려지고(스크럽), 경로가 닿으면 각 단계가 등장(위로 스크롤 시 되돌아감). 배경은 아이보리·블루그레이에서 반투명 안개로 풀리며 Our Vision 상단에 겹쳐 이어짐. 문구는 `src/content/story.ts`(임시 브랜드 스토리) |
+| Footer | "THE JOURNEY CONTINUES." Our Vision 하단에 겹치는 안개로 네이비에 내려앉고, 메시지 → 로고(기존 파일)·Core Service TripAI → © 연도(자동)·TripAI·Back to top 순서로 등장 |
 | Our Vision | 구름 위 새벽 풍경이 스크롤에 따라 천천히 이동(스크럽), 헤드라인 줄과 본문이 1회 떠오름. 이 구간에서는 헤더가 어두운 톤으로 전환 |
 | About | 사진 clip-path 리빌 + 프레임 내부 패럴랙스 |
 | Problem | 고정 무대에서 정보 과잉 → 개인화 부족 → 준비 복잡성 장면 전환 후 한 줄로 정리 |
