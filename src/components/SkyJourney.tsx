@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { gsap, useGSAP, MQ } from '../lib/gsap';
 import { createCloudFly, type CloudFly, type CloudFlyState } from '../lib/cloudFly';
+import { createFlightSky, type FlightSky } from '../lib/flightSky';
 import HeroSection from './HeroSection';
 import SectionLabel from './ui/SectionLabel';
 
@@ -32,9 +33,41 @@ export default function SkyJourney() {
         if (!fly) root.current?.classList.add('no-gl');
         const fog: CloudFlyState = { z: 0, density: 0, edge: 0, white: 0 };
         const fallback = q('.journey-fallback')[0] as HTMLElement;
+        // 구름 위(About) 하늘도 같은 렌더러로 살아 움직이게 함: 구름 바다는 천천히 흐르고 가까운 구름층이 지나감
+        let aboutSky: FlightSky | null = null;
+        let aboutVisible = false;
+        let inView = true;
+        let disposed = false;
+        void createFlightSky(q('.ja-gl')[0] as HTMLCanvasElement, {
+          skySrc: '/images/about/above-clouds.webp',
+          aspect: 1256 / 829,
+          horizon: 0.47,
+          sun: [0.52, 0.42],
+          flowK: 0.07,
+          wisp: 0.5,
+          glow: 0.05,
+          onReady: () => root.current?.classList.add('ja-gl-ready'),
+        }).then((r) => {
+          if (disposed) return r?.destroy();
+          aboutSky = r;
+          syncAbout();
+        });
+        const syncAbout = () => (aboutVisible && inView && !document.hidden ? aboutSky?.start() : aboutSky?.stop());
+        const io = new IntersectionObserver(([e]) => {
+          inView = e.isIntersecting;
+          syncAbout();
+        });
+        io.observe(q('.journey-stage')[0]);
+        document.addEventListener('visibilitychange', syncAbout);
+
         const draw = () => {
           if (fly) fly.render(fog);
           else gsap.set(fallback, { opacity: Math.min(1, Math.max(fog.white, fog.edge * 0.55, fog.density * 0.7)) });
+          const v = tl.progress() > 0.47;
+          if (v !== aboutVisible) {
+            aboutVisible = v;
+            syncAbout();
+          }
         };
 
         const tl = gsap.timeline({
@@ -71,6 +104,10 @@ export default function SkyJourney() {
         draw();
 
         return () => {
+          disposed = true;
+          io.disconnect();
+          document.removeEventListener('visibilitychange', syncAbout);
+          aboutSky?.destroy();
           fly?.destroy();
           root.current?.classList.remove('is-pinned', 'no-gl');
         };
@@ -90,6 +127,7 @@ export default function SkyJourney() {
         <section className="journey-about" aria-labelledby="ja-title">
           <div className="ja-media" aria-hidden="true">
             <img src="/images/about/above-clouds.webp" alt="" width={1256} height={829} loading="eager" decoding="async" />
+            <canvas className="ja-gl" />
           </div>
           <div className="ja-shade" aria-hidden="true" />
           <div className="wrap ja-in">

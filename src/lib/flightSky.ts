@@ -25,6 +25,11 @@ uniform sampler2D uSky;
 uniform sampler2D uMask;
 uniform float uTime;
 uniform float uAspect;
+uniform float uHorizon;   // 구름층 수평선 (이미지 y, 0=위)
+uniform vec2 uSun;        // 해(밝은 영역) 위치
+uniform float uFlowK;     // 사진 구름의 흐름 세기
+uniform float uWisp;      // 가까운 구름층 농도
+uniform float uGlow;      // 해 주변 빛 세기
 
 float hash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float noise(vec2 p) {
@@ -40,42 +45,48 @@ void main() {
   float y = uv.y;
   float freeSky = texture2D(uMask, uv).r;
 
-  // 1) 플로맵 — 깊이에 따른 속도, 비행 방향(왼쪽 위)의 반대인 오른쪽으로 흐름
-  float speed = 0.05 + 0.20 * smoothstep(0.12, 0.5, y) + 0.85 * smoothstep(0.5, 1.0, y);
-  vec2 dir = normalize(vec2(1.0, 0.2 * smoothstep(0.55, 1.0, y)));
+  // 1) 사진 속 구름의 흐름 — 깊이에 따른 속도(위쪽 하늘은 거의 정지, 수평선 아래 구름층일수록 빠르게)
+  float deck = smoothstep(uHorizon - 0.05, 1.0, y);
+  float speed = 0.06 + 0.25 * smoothstep(0.1, uHorizon, y) + 1.0 * deck;
+  vec2 dir = normalize(vec2(1.0, 0.25 * deck));
   vec2 flow = dir * speed * freeSky;
-  float t = uTime / 6.0 + noise(uv * vec2(2.0, 3.0) + 7.0);
+  // 교차 페이드 위상은 넓은 영역 단위로 어긋나게 해 전체가 동시에 '숨 쉬는' 느낌을 없앰
+  float t = uTime / 8.0 + fbm3(uv * 1.3 + 4.0) * 2.0;
   float p0 = fract(t);
   float p1 = fract(t + 0.5);
   float w = abs(p0 * 2.0 - 1.0);
-  vec2 k = vec2(0.016, 0.016 * uAspect); // 픽셀 기준 등방성 이동량
+  vec2 k = vec2(uFlowK, uFlowK * uAspect);
   vec3 c0 = texture2D(uSky, uv - flow * p0 * k).rgb;
   vec3 c1 = texture2D(uSky, uv - flow * p1 * k).rgb;
   vec3 col = mix(c0, c1, w);
 
-  // 2) 원근 구름층 (수평선 아래)
-  float below = y - 0.47;
-  if (below > 0.0) {
-    float z = 0.10 / (below + 0.015);
-    vec2 wp = vec2(uv.x * uAspect * z - uTime * 0.007, z * 1.4);
-    float n = fbm5(wp * 0.9 + vec2(0.0, uTime * 0.003));
-    float wisp = smoothstep(0.52, 0.80, n);
-    float fade = smoothstep(0.0, 0.14, below) * (1.0 - 0.35 * smoothstep(0.7, 1.0, y));
-    float a = wisp * fade * 0.20;
-    vec3 tint = mix(vec3(1.0, 0.95, 0.9), col * 1.15, 0.5);
-    col += (vec3(1.0) - col) * a * tint;
+  // 2) 가까운 구름층 — 수평선 아래 평면에 원근 투영, 가까울수록(아래) 크고 빠르게 뒤로 지나감
+  float below = y - uHorizon;
+  if (below > 0.0 && uWisp > 0.0) {
+    float z = 0.10 / (below + 0.02);
+    vec2 wp = vec2(uv.x * uAspect * z - uTime * 0.009, z * 1.3);
+    float n = fbm5(wp * 0.85 + vec2(0.0, uTime * 0.004));
+    float lit = clamp((n - fbm5(wp * 0.85 + vec2(0.05, -0.08))) * 5.0 + 0.55, 0.0, 1.0);
+    float dens = smoothstep(0.46, 0.74, n);
+    float fade = smoothstep(0.0, 0.16, below);
+    float a = dens * fade * uWisp;
+    vec3 cloud = mix(col * vec3(0.86, 0.88, 0.94), vec3(1.0, 0.97, 0.94), lit);
+    col = mix(col, cloud, a);
   }
 
-  // 3) 빛 — 해 주변의 아주 느린 밝기 변화, 구름 사이의 저주파 명암
-  vec2 d = (uv - vec2(0.78, 0.43)) * vec2(uAspect, 1.0);
-  float glow = exp(-dot(d, d) * 6.0);
-  float pulse = 0.5 + 0.5 * sin(uTime * 0.21) * sin(uTime * 0.13 + 1.3);
-  col += vec3(1.0, 0.86, 0.72) * glow * 0.035 * pulse;
-  float l = fbm3(vec2(uv.x * 1.5 - uTime * 0.006, uv.y * 1.2)) - 0.5;
-  col *= 1.0 + l * 0.05 * freeSky;
+  // 3) 빛 — 해 주변의 느린 밝기 변화와 구름 사이의 저주파 명암 (몇 % 이내)
+  vec2 d = (uv - uSun) * vec2(uAspect, 1.0);
+  float glow = exp(-dot(d, d) * 5.0);
+  float pulse = 0.5 + 0.5 * sin(uTime * 0.23) * sin(uTime * 0.11 + 1.3);
+  col += vec3(1.0, 0.86, 0.72) * glow * uGlow * (0.6 + 0.4 * pulse);
+  float l = fbm3(vec2(uv.x * 1.5 - uTime * 0.012, uv.y * 1.2)) - 0.5;
+  col *= 1.0 + l * 0.06 * freeSky;
 
   gl_FragColor = vec4(col, 1.0);
 }`;
+
+/** 1×1 흰색 PNG (마스크 생략 시) */
+const WHITE_PX = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACklEQVR4nGP4DwABAQEAsTj2FAAAAABJRU5ErkJggg==';
 
 export type FlightSky = { start: () => void; stop: () => void; destroy: () => void };
 
@@ -115,14 +126,25 @@ function texture(gl: WebGLRenderingContext, img: HTMLImageElement, unit: number)
  */
 export async function createFlightSky(
   canvas: HTMLCanvasElement,
-  opts: { skySrc: string; maskSrc: string; aspect: number; onReady?: () => void },
+  opts: {
+    skySrc: string;
+    /** 흐름 마스크(흰색=흐름). 생략하면 화면 전체가 흐름 */
+    maskSrc?: string;
+    aspect: number;
+    horizon?: number;
+    sun?: [number, number];
+    flowK?: number;
+    wisp?: number;
+    glow?: number;
+    onReady?: () => void;
+  },
 ): Promise<FlightSky | null> {
   const gl = canvas.getContext('webgl', { antialias: false, alpha: false, depth: false, stencil: false, powerPreference: 'low-power', preserveDrawingBuffer: false });
   if (!gl) return null;
 
   let sky: HTMLImageElement, mask: HTMLImageElement;
   try {
-    [sky, mask] = await Promise.all([loadImage(opts.skySrc), loadImage(opts.maskSrc)]);
+    [sky, mask] = await Promise.all([loadImage(opts.skySrc), loadImage(opts.maskSrc ?? WHITE_PX)]);
   } catch {
     return null;
   }
@@ -152,6 +174,11 @@ export async function createFlightSky(
   gl.uniform1i(gl.getUniformLocation(prog, 'uSky'), 0);
   gl.uniform1i(gl.getUniformLocation(prog, 'uMask'), 1);
   gl.uniform1f(gl.getUniformLocation(prog, 'uAspect'), opts.aspect);
+  gl.uniform1f(gl.getUniformLocation(prog, 'uHorizon'), opts.horizon ?? 0.47);
+  gl.uniform2f(gl.getUniformLocation(prog, 'uSun'), ...(opts.sun ?? [0.78, 0.43]));
+  gl.uniform1f(gl.getUniformLocation(prog, 'uFlowK'), opts.flowK ?? 0.05);
+  gl.uniform1f(gl.getUniformLocation(prog, 'uWisp'), opts.wisp ?? 0.42);
+  gl.uniform1f(gl.getUniformLocation(prog, 'uGlow'), opts.glow ?? 0.04);
   const uTime = gl.getUniformLocation(prog, 'uTime');
 
   // 해상도: 기기 픽셀 비율은 최대 1.5배, 총 픽셀 수는 약 240만으로 제한 (부드러운 하늘이라 이 이상은 차이가 거의 없음)

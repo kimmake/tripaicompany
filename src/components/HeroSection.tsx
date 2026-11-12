@@ -38,15 +38,17 @@ export default function HeroSection() {
         // 반복 모션 (transform만 사용)
         const loops: gsap.core.Tween[] = [
           // 카메라 전진: 하늘이 아주 느리게 다가옴
-          gsap.fromTo(q('.sky-move'), { scale: 1, xPercent: 0, yPercent: 0 }, { scale: 1.03, xPercent: 0.6, yPercent: -0.4, duration: 40, ease: 'sine.inOut', repeat: -1, yoyo: true }),
+          // 카메라 시점 이동: 하늘이 날개 뒤에서 천천히 좌우·상하로 이동 → 고정된 날개와의 시차(패럴랙스)
+          // (확대 1.05 상태에서 이동 폭은 가장자리 여유 안쪽)
+          gsap.fromTo(q('.sky-move'), { scale: 1.05, xPercent: -0.5, yPercent: 0.3 }, { scale: 1.05, xPercent: 0.5, yPercent: -0.4, duration: 16, ease: 'sine.inOut', repeat: -1, yoyo: true }),
           // 카메라 호흡: 전체 레이어의 미세한 상하 움직임
           gsap.to(q('.hero-breath'), { yPercent: -0.4, scale: 1.01, duration: 12, ease: 'sine.inOut', repeat: -1, yoyo: true }),
           // (WebGL 미지원 시) 구름 안개 텍스처
           gsap.fromTo(q('.haze-far'), { xPercent: -100 / 3 }, { xPercent: 0, duration: 150, ease: 'none', repeat: -1 }),
           gsap.fromTo(q('.haze-near'), { xPercent: -100 / 3 }, { xPercent: 0, duration: 80, ease: 'none', repeat: -1 }),
           // 날개 진동: 느린 상하 흔들림 + 아주 작은 떨림. 매 반복마다 목표값을 새로 정해 규칙적으로 보이지 않게 함
-          gsap.to(q('.wing-sway'), { y: () => gsap.utils.random(-1.5, 1.5), duration: 2.1, ease: 'sine.inOut', repeat: -1, repeatRefresh: true }),
-          gsap.to(q('.wing-buzz'), { y: () => gsap.utils.random(-0.4, 0.4), duration: 0.22, ease: 'sine.inOut', repeat: -1, repeatRefresh: true }),
+          gsap.to(q('.wing-sway'), { y: () => gsap.utils.random(-2.6, 2.6), duration: 2.4, ease: 'sine.inOut', repeat: -1, repeatRefresh: true }),
+          gsap.to(q('.wing-buzz'), { y: () => gsap.utils.random(-0.6, 0.6), duration: 0.2, ease: 'sine.inOut', repeat: -1, repeatRefresh: true }),
         ];
 
         // WebGL 하늘
