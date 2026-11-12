@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { brandFilm } from '../config/media';
-import { service, motion } from '../config/site';
+import { service, motion, sections } from '../config/site';
 import { ArrowRight } from './ui/Icons';
 import LinkButton from './ui/LinkButton';
 import { gsap, useGSAP, MQ } from '../lib/gsap';
@@ -38,8 +38,10 @@ export default function BrandFilmSection() {
     { scope: root },
   );
 
+  // Our Team이 숨겨져 있으면 이 섹션이 바로 Our Vision과 맞닿으므로, 같은 안개 꼬리(st-tail)로 색을 이어줌
+  const tail = !sections.teamTeaser && sections.visionAnywhere;
   return (
-    <section ref={root} className="film" id="film" aria-labelledby="film-title">
+    <section ref={root} className={`film${tail ? ' has-tail' : ''}`} id="film" aria-labelledby="film-title">
       <div className="wrap film-head">
         <SectionLabel className="center">Service 01 — TripAI</SectionLabel>
         <SplitLines id="film-title" className="h2-en film-title" lines={['Our First Journey.']} />
@@ -71,6 +73,7 @@ export default function BrandFilmSection() {
           </a>
         </div>
       </div>
+      {tail && <div className="st-tail" aria-hidden="true" />}
     </section>
   );
 }

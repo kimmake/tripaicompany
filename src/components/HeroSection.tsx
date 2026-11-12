@@ -62,6 +62,8 @@ export default function HeroSection() {
           maskSrc: '/images/hero/flow-mask.png',
           aspect: STAGE_ASPECT,
           onReady: () => root.current?.classList.add('is-gl'),
+          // 컨텍스트 손실 시 CSS 안개 레이어와 정적 사진으로 되돌림 (검은 화면 방지)
+          onLost: () => root.current?.classList.remove('is-gl'),
         }).then((r) => {
           if (disposed) return r?.destroy();
           sky = r;

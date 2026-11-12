@@ -68,7 +68,7 @@ void main() {
 export type CloudFlyState = { z: number; density: number; edge: number; white: number };
 export type CloudFly = { render: (s: CloudFlyState) => void; destroy: () => void };
 
-export function createCloudFly(canvas: HTMLCanvasElement, scale: number): CloudFly | null {
+export function createCloudFly(canvas: HTMLCanvasElement, scale: number, onLost?: () => void): CloudFly | null {
   const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, powerPreference: 'low-power' });
   if (!gl) return null;
   const sh = (type: number, src: string) => {
@@ -106,15 +106,28 @@ export function createCloudFly(canvas: HTMLCanvasElement, scale: number): CloudF
       gl.viewport(0, 0, w, h);
     }
     gl.uniform2f(uRes, canvas.width, canvas.height);
+    // 크기가 바뀌면 버퍼가 비워지므로 마지막 상태로 즉시 다시 그림
+    if (last) {
+      blank = false;
+      api.render(last);
+    }
   };
-  const ro = new ResizeObserver(resize);
-  ro.observe(canvas);
-  resize();
   const t0 = performance.now();
   let blank = false;
+  let lost = false;
+  let last: CloudFlyState | null = null;
+  // GPU가 컨텍스트를 회수하면 렌더링을 멈추고 호출 측의 CSS 안개로 대체
+  const handleLost = (e: Event) => {
+    e.preventDefault();
+    lost = true;
+    onLost?.();
+  };
+  canvas.addEventListener('webglcontextlost', handleLost);
 
-  return {
+  const api: CloudFly = {
     render(s) {
+      if (lost) return;
+      last = { ...s };
       if (s.density < 0.002 && s.edge < 0.002 && s.white < 0.002) {
         if (!blank) {
           gl.clearColor(0, 0, 0, 0);
@@ -133,7 +146,12 @@ export function createCloudFly(canvas: HTMLCanvasElement, scale: number): CloudF
     },
     destroy() {
       ro.disconnect();
+      canvas.removeEventListener('webglcontextlost', handleLost);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     },
   };
+  const ro = new ResizeObserver(resize);
+  ro.observe(canvas);
+  resize();
+  return api;
 }

@@ -389,6 +389,8 @@
 @layer components {
 /* ---------- Brand Film ---------- */
 .film { background: var(--color-cloud); padding: clamp(96px, 11vw, 168px) 0 clamp(96px, 11vw, 160px); }
+.film.has-tail { --st-tail: clamp(240px, 32vh, 360px); position: relative; z-index: 1; padding-bottom: 0; background: linear-gradient(180deg, var(--color-cloud) 0%, var(--color-cloud) 55%, #E6EBF1 100%) top / 100% calc(100% - var(--st-tail)) no-repeat; }
+.film.has-tail .film-cta { padding-bottom: clamp(96px, 11vw, 160px); }
 .film-title { color: var(--color-navy); }
 .film-sub { margin: -6px 0 0; font-size: clamp(18px, 1.7vw, 22px); font-weight: 500; letter-spacing: -.03em; color: var(--color-ink); }
 .film-head { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px; margin-bottom: clamp(40px, 5vw, 64px); }
@@ -497,6 +499,8 @@
 .ja-fade { position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(180deg, rgba(233, 238, 244, 0) 0%, rgba(233, 238, 244, .55) 45%, rgba(233, 238, 244, .9) 78%, #E9EEF4 100%); pointer-events: none; }
 /* 구름 장면 바로 다음의 영상 섹션: 같은 구름 안개 색에서 시작해 점점 밝아짐 */
 .journey + .film { background: linear-gradient(180deg, #E9EEF4 0%, #EEF2F7 22%, #F4F7FA 48%, var(--color-cloud) 78%); }
+/* 구름 위 → 필름 그라데이션을 유지하되, 아래 꼬리 영역은 비워 Our Vision이 안개 너머로 비치게 함 */
+.journey + .film.has-tail { background: linear-gradient(180deg, #E9EEF4 0%, #EEF2F7 14%, #F4F7FA 30%, var(--color-cloud) 50%, var(--color-cloud) 70%, #E6EBF1 100%) top / 100% calc(100% - var(--st-tail)) no-repeat; }
 .ja-in { position: relative; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; padding-top: clamp(110px, 17vh, 170px); }
 .journey-about .ja-label { color: var(--color-sky-ink); }
 .journey-about .ja-label::after { content: ""; width: 28px; height: 1px; background: currentColor; opacity: .5; }
@@ -754,6 +758,7 @@
 }
 @media (max-width: 767px) {
   .tt { --st-tail: 220px; }
+  .film.has-tail { --st-tail: 220px; }
   .dp-values { grid-template-columns: 1fr; gap: 28px; }
   .ph-in { padding-top: 120px; }
   .film-cta { flex-direction: column; }

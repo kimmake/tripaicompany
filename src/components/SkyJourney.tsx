@@ -30,7 +30,12 @@ export default function SkyJourney() {
         const canvas = q('.journey-fog')[0] as HTMLCanvasElement;
         const lowEnd = (navigator.hardwareConcurrency ?? 8) <= 4;
         const mobile = window.matchMedia('(max-width: 767px)').matches;
-        const fly: CloudFly | null = createCloudFly(canvas, lowEnd ? 0.28 : mobile ? 0.35 : 0.5);
+        let flyLost = false;
+        const fly: CloudFly | null = createCloudFly(canvas, lowEnd ? 0.28 : mobile ? 0.35 : 0.5, () => {
+          flyLost = true;
+          root.current?.classList.add('no-gl');
+          draw();
+        });
         if (!fly) root.current?.classList.add('no-gl');
         const fog: CloudFlyState = { z: 0, density: 0, edge: 0, white: 0 };
         const fallback = q('.journey-fallback')[0] as HTMLElement;
@@ -48,6 +53,7 @@ export default function SkyJourney() {
           wisp: 0.5,
           glow: 0.05,
           onReady: () => root.current?.classList.add('ja-gl-ready'),
+          onLost: () => root.current?.classList.remove('ja-gl-ready'),
         }).then((r) => {
           if (disposed) return r?.destroy();
           aboutSky = r;
@@ -62,7 +68,7 @@ export default function SkyJourney() {
         document.addEventListener('visibilitychange', syncAbout);
 
         const draw = () => {
-          if (fly) fly.render(fog);
+          if (fly && !flyLost) fly.render(fog);
           else gsap.set(fallback, { opacity: Math.min(1, Math.max(fog.white, fog.edge * 0.55, fog.density * 0.7)) });
           const v = tl.progress() > 0.47;
           if (v !== aboutVisible) {

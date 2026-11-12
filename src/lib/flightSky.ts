@@ -137,9 +137,13 @@ export async function createFlightSky(
     wisp?: number;
     glow?: number;
     onReady?: () => void;
+    /** GPU가 컨텍스트를 회수했을 때 (캔버스를 숨기고 아래 정적 이미지로 대체) */
+    onLost?: () => void;
   },
 ): Promise<FlightSky | null> {
-  const gl = canvas.getContext('webgl', { antialias: false, alpha: false, depth: false, stencil: false, powerPreference: 'low-power', preserveDrawingBuffer: false });
+  // alpha: true — 버퍼가 비워지는 순간(리사이즈·컨텍스트 손실)에도 검은 화면 대신 아래 정적 이미지가 보이도록.
+  // 셰이더는 항상 알파 1을 출력하므로 평소 화면은 동일합니다.
+  const gl = canvas.getContext('webgl', { antialias: false, alpha: true, premultipliedAlpha: true, depth: false, stencil: false, powerPreference: 'low-power', preserveDrawingBuffer: false });
   if (!gl) return null;
 
   let sky: HTMLImageElement, mask: HTMLImageElement;
@@ -193,17 +197,35 @@ export async function createFlightSky(
       canvas.width = w;
       canvas.height = h;
       gl.viewport(0, 0, w, h);
+      // 크기를 바꾸면 버퍼가 비워지므로, 멈춰 있는 상태여도 즉시 한 장을 다시 그림
+      if (ready && !lost) draw(performance.now());
     }
   };
-  const ro = new ResizeObserver(resize);
-  ro.observe(canvas);
-  resize();
 
   let raf = 0;
   let running = false;
   let ready = false;
+  let lost = false;
   const t0 = performance.now();
+  const draw = (now: number) => {
+    gl.uniform1f(uTime, (now - t0) / 1000);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  };
+  const onLost = (e: Event) => {
+    e.preventDefault();
+    lost = true;
+    running = false;
+    cancelAnimationFrame(raf);
+    canvas.style.visibility = 'hidden';
+    opts.onLost?.();
+  };
+  canvas.addEventListener('webglcontextlost', onLost);
+  const ro = new ResizeObserver(resize);
+  ro.observe(canvas);
+  resize();
+
   const frame = (now: number) => {
+    if (lost) return;
     gl.uniform1f(uTime, (now - t0) / 1000);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     if (!ready) {
@@ -215,7 +237,7 @@ export async function createFlightSky(
 
   return {
     start() {
-      if (running) return;
+      if (running || lost) return;
       running = true;
       raf = requestAnimationFrame(frame);
     },
@@ -227,6 +249,7 @@ export async function createFlightSky(
       running = false;
       cancelAnimationFrame(raf);
       ro.disconnect();
+      canvas.removeEventListener('webglcontextlost', onLost);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     },
   };
