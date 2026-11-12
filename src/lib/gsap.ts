@@ -1,9 +1,8 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { useGSAP } from '@gsap/react';
 
-gsap.registerPlugin(ScrollTrigger, MotionPathPlugin, useGSAP);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 gsap.defaults({ ease: 'power3.out' });
 
 /** 반응형·모션 선호에 따른 미디어 조건 (gsap.matchMedia 용) */

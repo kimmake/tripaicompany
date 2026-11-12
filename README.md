@@ -2,7 +2,7 @@
 
 Anywhere의 공식 기업 홈페이지입니다. **Anywhere**는 AI 기술로 더 나은 여행 경험을 만드는 트래블테크 스타트업이고, **TripAI**는 Anywhere의 첫 번째이자 핵심 서비스(AI 기반 맞춤형 여행 추천 플랫폼)입니다.
 
-**현재 공개 섹션**: Hero(Anywhere presents TripAI) → About Anywhere(`#anywhere`) → Brand Film · Service 01 TripAI(`#film`) → Our Vision(`#our-vision`) → Footer
+**현재 공개 섹션**: Hero(Anywhere 로고 + 비행 중인 하늘) → About Anywhere(`#anywhere`) → Brand Film · Service 01 TripAI(`#film`) → Our Vision(`#our-vision`) → Footer
 **내비게이션**: About · TripAI · Vision
 
 섹션 노출은 `src/config/site.ts` 의 `sections` 로 관리합니다. 이전 TripAI 서비스 홈페이지용 섹션(about, problem, approach, technology, vision, contact)은 코드에 그대로 보존되어 있고 `false` 로 숨겨져 있습니다. 새 섹션은 `aboutAnywhere`, `visionAnywhere` 키로 같은 방식으로 켜고 끕니다. (보존된 `about`·`vision` 섹션은 `#about`·`#vision` id를 쓰므로 새 섹션과 겹치지 않습니다.) 이전 내비게이션 구성은 `archivedNavItems` 에 남겨 두었습니다.
@@ -73,7 +73,7 @@ src/
 
 | 섹션 | 모션 |
 | --- | --- |
-| Hero | 한 번만 재생되고 최종 화면에서 멈추는 브랜드 시퀀스: Anywhere 등장(0–2초) → 위로 이동·축소, 연결선과 presents, 종이비행기 출발(2–4초) → 비행기가 지나간 자리에 TripAI 등장(4–6초) → 서비스 설명과 함께 최종 구성 유지(6–8초). 경로는 웹폰트 로딩 후 실제 배치를 측정해 만듭니다. 배경은 사진을 레이어로 분리해 비행 중인 창밖처럼 연출: 하늘의 아주 느린 전진·드리프트, 서로 다른 속도로 흐르는 구름 안개 2겹, 날개의 미세한 진동, 카메라 호흡. 데스크톱 스크롤 패럴랙스(하늘 > 날개) |
+| Hero | 중앙에 Anywhere 로고만 고정(애니메이션 없음). 배경은 WebGL로 사진 속 구름을 흐르게 함: 먼 하늘은 거의 정지, 아래 구름층일수록 빠르게(플로맵 교차 페이드로 초기화 순간 없음), 원근이 적용된 구름층이 지나가고 해 주변 빛이 아주 미세하게 변함. 날개는 별도 레이어로 미세한 상하 진동, 카메라는 느린 전진·호흡. WebGL 미지원 시 CSS 안개 레이어, 모션 축소 시 정지 이미지. `src/lib/flightSky.ts` |
 | About Anywhere | 라벨 → 헤드라인(줄 단위 마스크) → 본문(시간차) → 마지막 문장 강조(종이비행기 심볼, TripAI 아래 하늘색 선) 순서로 1회 등장 |
 | Brand Film | 진입 시 아래에서 fade + scale (1회). 재생은 사용자 조작으로만, 스크롤 모션과 독립 |
 | Our Vision | 구름 위 새벽 풍경이 스크롤에 따라 천천히 이동(스크럽), 헤드라인 줄과 본문이 1회 떠오름. 이 구간에서는 헤더가 어두운 톤으로 전환 |
@@ -105,6 +105,10 @@ ffmpeg -i TripAI_1080p30.mp4 -vf scale=1280:720 -c:v libx264 -preset slow -crf 2
 ```
 
 
+## Hero 배경 구현 메모
+
+실제 비행 영상(1순위)은 사용하지 않았습니다. 이 작업 환경에서는 스톡 영상 사이트에 접근할 수 없었고, 기존 구도(오른쪽 날개·윙렛·노을)와 일치하고 라이선스를 확인할 수 있는 영상을 찾지 못했습니다. 적합한 영상이 생기면 `.sky-move` 레이어를 `<video autoplay muted loop playsinline>`로 교체하면 됩니다(날개 레이어는 영상에 날개가 있으면 제거).
+
 ## 브랜드 로고 (`public/images/brand`)
 
 - `anywhere-logo-800.webp`, `anywhere-logo-1600.webp`: Anywhere 공식 로고(흰색 워드마크 + 하늘색 종이비행기, 투명 배경). 제공된 원본에서 배경의 미세한 알파 노이즈만 제거하고 여백을 잘라냈습니다(비율 1745:431).
@@ -118,6 +122,7 @@ ffmpeg -i TripAI_1080p30.mp4 -vf scale=1280:720 -c:v libx264 -preset slow -crf 2
 | --- | --- |
 | `sky-*.webp` | 하늘 레이어. 날개 영역을 주변 하늘로 복원(inpaint)해, 하늘이 움직여도 날개 뒤에서 빈 공간이 드러나지 않음 |
 | `wing-*.webp` | 날개 레이어(투명 배경, 가장자리 1px 페더) |
+| `flow-mask.png` | 흐름 마스크(600×398). 날개와 그 주변은 0이라 구름이 흐르지 않아, 날개 뒤 복원 영역이 끌려 나오지 않음 |
 | `haze-far.webp`, `haze-near.webp` | 가로로 이음새 없이 반복되는 구름 안개 텍스처(노이즈로 생성), `mix-blend-mode: screen` |
 
 - 무대(`.hero-stage`)는 사진 비율을 유지한 채 Hero를 덮도록 컨테이너 쿼리 단위로 크기를 정하고 2% 여유를 둡니다. 세로 화면에서는 `--focus-x`로 날개 쪽을 보여줍니다.

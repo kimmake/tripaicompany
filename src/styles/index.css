@@ -128,24 +128,13 @@
   linear-gradient(180deg, rgba(20,40,63,.38) 0%, rgba(20,40,63,.06) 26%, rgba(20,40,63,.04) 70%, rgba(20,40,63,.30) 100%); }
 .hero-veil { position: absolute; inset: 0; background: var(--color-cloud); pointer-events: none; }
 .hero-inner { position: relative; height: 100%; display: flex; align-items: center; justify-content: center; padding: 0 var(--gutter); }
-.brand { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; color: #fff; }
-.brand-trail { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.brand-trail .trail { fill: none; stroke: rgba(255, 255, 255, .75); stroke-width: 1.2; stroke-linecap: round; opacity: 0; }
-.brand-trail .flyer { opacity: 0; }
-.brand-trail .flyer path { fill: rgba(255, 255, 255, .16); stroke: #fff; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
-/* 회사 브랜드(상위) — 가장 크게 */
-.bs-company { margin: 0; display: flex; font-family: var(--font-display); font-weight: 300; font-size: clamp(50px, 8.2vw, 128px); line-height: 1; letter-spacing: -.045em; will-change: transform; filter: drop-shadow(0 2px 22px rgba(20, 40, 63, .28)); } /* 그림자는 부모에 적용 → 로고 와이프(clip) 중에도 그림자 경계가 잘리지 않음 */
-/* 회사 로고 이미지 — h1의 font-size(em) 기준으로 크기를 정해 기존 레이아웃·애니메이션 측정을 그대로 사용 */
-.bs-logo { display: block; width: 4.4em; height: auto; aspect-ratio: 1745 / 431; user-select: none; -webkit-user-drag: none; }
-/* 관계: Anywhere ↓ presents ↓ TripAI */
-.bs-line { display: block; width: 1px; height: clamp(26px, 4.2vh, 44px); margin-top: clamp(18px, 2.6vh, 28px); background: linear-gradient(rgba(255, 255, 255, .15), rgba(255, 255, 255, .75)); }
-.bs-presents { margin: 12px 0 0; font-family: var(--font-label); font-size: 11px; font-weight: 500; letter-spacing: .34em; text-indent: .34em; text-transform: uppercase; color: rgba(255, 255, 255, .9); text-shadow: 0 1px 12px rgba(20, 40, 63, .35); }
-/* 서비스 브랜드(하위) — 회사명보다 작게, 종이비행기 심볼과 함께 */
-.bs-service { margin: clamp(14px, 2vh, 20px) 0 0; display: flex; align-items: center; gap: .26em; font-family: var(--font-display); font-weight: 300; font-size: clamp(32px, 4.3vw, 66px); line-height: 1.08; letter-spacing: -.035em; text-shadow: 0 2px 30px rgba(20, 40, 63, .2); }
-.bs-mark { display: inline-flex; }
-.bs-mark svg { width: .62em; height: .62em; fill: rgba(255, 255, 255, .16); stroke: #fff; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
-.bs-name { display: inline-block; padding-right: .04em; }
-.bs-caption { margin: 14px 0 0; font-size: 15px; letter-spacing: -.01em; color: rgba(255, 255, 255, .92); text-shadow: 0 1px 14px rgba(20, 40, 63, .4); }
+/* 중앙 로고 — 애니메이션 없이 고정. 밝은 하늘 위에서도 또렷하도록 부드러운 그림자 */
+.hero-title { margin: 0; line-height: 0; filter: drop-shadow(0 2px 24px rgba(20, 40, 63, .32)) drop-shadow(0 1px 3px rgba(20, 40, 63, .18)); }
+.hero-logo { display: block; width: clamp(260px, 40vw, 620px); height: auto; aspect-ratio: 1745 / 431; user-select: none; -webkit-user-drag: none; }
+/* WebGL 하늘: 첫 프레임이 그려진 뒤 정지 이미지 위로 페이드인. 이후 안개 텍스처(대체용)는 숨김 */
+.sky-gl { opacity: 0; transition: opacity 1.2s ease; }
+.hero.is-gl .sky-gl { opacity: 1; }
+.hero.is-gl .haze { display: none; }
 
 /* ---------- About ---------- */
 .about { padding: clamp(96px, 12vw, 180px) 0 clamp(80px, 10vw, 150px); }
@@ -531,7 +520,7 @@
   .hdr.is-scrolled:not(.is-dark) .hdr-bg { background: rgba(248, 250, 252, .92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 1px 0 rgba(20,40,63,.08); }
   .hdr.is-scrolled .hdr-in { height: 60px; }
   .hero { height: clamp(600px, 100svh, 860px); }
-  .bs-caption { font-size: 14px; }
+  .hero-logo { width: min(78vw, 340px); }
   .film-head { align-items: flex-start; text-align: left; }
   .film-head .body br { display: none; }
   .label.center::after { display: none; }
