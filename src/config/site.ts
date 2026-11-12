@@ -21,6 +21,8 @@ export const site = {
 export const service = {
   name: 'TripAI',
   descriptor: 'AI 기반 맞춤형 여행 추천 서비스',
+  /** TripAI 서비스 주소 (사용자 제공) */
+  url: 'https://trip-ai-rho.vercel.app/',
   slogan: '당신의 취향이 여행이 되는 순간.',
 } as const;
 

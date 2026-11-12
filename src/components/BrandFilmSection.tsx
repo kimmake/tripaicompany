@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 import { brandFilm } from '../config/media';
+import { service } from '../config/site';
+import { ArrowRight } from './ui/Icons';
 import { gsap, useGSAP, MQ } from '../lib/gsap';
 import SectionLabel from './ui/SectionLabel';
 import SplitLines from './ui/SplitLines';
@@ -56,6 +58,13 @@ export default function BrandFilmSection() {
             durationHint={brandFilm.duration}
             ctaLabel="TripAI 필름 보기"
           />
+        </div>
+        <div className="film-cta" data-reveal="fade">
+          <a className="cta-btn" href={service.url} target="_blank" rel="noopener noreferrer">
+            <span>{service.name} 바로가기</span>
+            <ArrowRight />
+            <span className="sr-only">(새 창에서 열림)</span>
+          </a>
         </div>
       </div>
     </section>
