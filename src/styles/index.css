@@ -520,6 +520,33 @@
   .ja-media img { object-position: 46% 60%; }
 }
 }
+@layer components {
+/* ---------- Our Story & Journey ---------- */
+.st { --st-dot-on: var(--color-sky-ink); --st-tail: clamp(240px, 32vh, 360px); position: relative; background: linear-gradient(180deg, var(--color-cloud) 0%, #F7F3EC 26%, #F1F0EC 52%, #E6EBF1 100%) top / 100% calc(100% - var(--st-tail)) no-repeat; padding-top: clamp(104px, 12vw, 176px); }
+.st-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: start; padding-bottom: clamp(72px, 8vw, 120px); }
+.st-head { grid-column: 1 / span 6; position: sticky; top: clamp(110px, 16vh, 160px); display: flex; flex-direction: column; gap: 26px; }
+.st-title { margin: 0; font-weight: 500; font-size: clamp(34px, 4vw, 60px); line-height: 1.16; letter-spacing: -.045em; color: var(--color-navy); }
+.st-title .ln { display: block; white-space: nowrap; }
+.st-main { grid-column: 7 / span 6; display: flex; flex-direction: column; gap: clamp(64px, 7vw, 104px); padding-top: clamp(40px, 4vw, 64px); }
+.st-body { display: flex; flex-direction: column; gap: 18px; }
+.st-body p { margin: 0; font-size: clamp(16px, 1.2vw, 18px); line-height: 1.85; color: #4A5663; letter-spacing: -.015em; }
+.st-body .st-q { font-size: clamp(21px, 1.9vw, 28px); line-height: 1.5; font-weight: 500; color: var(--color-navy); letter-spacing: -.035em; margin-bottom: 6px; }
+/* 여정: 점선(아직 가지 않은 길) 위로 실선 경로가 이어짐 */
+.st-steps { position: relative; list-style: none; margin: 0; padding: 0 0 0 48px; display: flex; flex-direction: column; gap: clamp(48px, 5.5vw, 76px); }
+.st-route { position: absolute; left: 13px; top: 8px; bottom: 6px; width: 2px; }
+.st-route-base { position: absolute; inset: 0; left: 0; width: 1px; background: repeating-linear-gradient(180deg, rgba(20, 40, 63, .28) 0 4px, transparent 4px 10px); }
+.st-route-fill { position: absolute; inset: 0; left: -0.25px; width: 1.5px; background: linear-gradient(180deg, var(--color-sky-ink), var(--color-navy)); }
+.st-start { position: absolute; left: -10px; top: -40px; width: 22px; height: 22px; color: var(--color-sky-ink); }
+.st-start svg { width: 100%; height: 100%; fill: rgba(120, 185, 231, .18); stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+.st-step { position: relative; display: flex; flex-direction: column; gap: 10px; }
+.st-dot { position: absolute; left: -40px; top: 4px; width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid var(--color-sky-ink); background: #F5F3EE; transform: scale(.85); }
+.st-tag { font-family: var(--font-label); font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--color-sky-ink); }
+.st-step h3 { margin: 0; font-size: clamp(21px, 1.8vw, 27px); font-weight: 500; letter-spacing: -.035em; line-height: 1.35; color: var(--color-navy); }
+.st-step p { margin: 0; max-width: 520px; font-size: clamp(15px, 1.15vw, 17px); line-height: 1.8; color: #4A5663; }
+.st { z-index: 1; }
+/* Vision 상단에 겹쳐, 불투명한 밝은 하늘 → 반투명 안개 → 투명 으로 풀림 (색 띠 없이 저녁 하늘이 드러남) */
+.st-tail { position: relative; height: var(--st-tail); margin-bottom: calc(-1 * var(--st-tail)); background: linear-gradient(180deg, #E6EBF1 0%, rgba(214, 222, 231, .92) 22%, rgba(170, 184, 202, .62) 50%, rgba(110, 126, 150, .25) 78%, rgba(62, 77, 102, 0) 100%); pointer-events: none; }
+}
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (hover: none) { .range.vol { display: none; } }
 
@@ -611,4 +638,19 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .av-media { inset: 0; }
+}
+
+@media (max-width: 1023px) {
+  .st-head { grid-column: 1 / -1; position: static; }
+  .st-main { grid-column: 1 / -1; padding-top: 36px; gap: 64px; }
+}
+@media (max-width: 767px) {
+  .st-steps { padding-left: 40px; gap: 44px; }
+  .st-route { left: 9px; }
+  .st-dot { left: -36px; }
+  .st { --st-tail: 220px; }
+  .st-title .ln { white-space: normal; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .st-dot { transform: none; background: var(--color-sky-ink); }
 }

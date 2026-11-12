@@ -4,6 +4,7 @@ import SkyJourney from './components/SkyJourney';
 import AboutSection from './components/AboutSection';
 import AnywhereAboutSection from './components/AnywhereAboutSection';
 import AnywhereVisionSection from './components/AnywhereVisionSection';
+import StorySection from './components/StorySection';
 import BrandFilmSection from './components/BrandFilmSection';
 import ProblemSection from './components/ProblemSection';
 import ApproachSection from './components/ApproachSection';
@@ -26,6 +27,7 @@ export default function App() {
         {sections.about && <AboutSection />}
         {sections.aboutAnywhere && <AnywhereAboutSection />}
         {sections.brandFilm && <BrandFilmSection />}
+        {sections.story && <StorySection />}
         {sections.visionAnywhere && <AnywhereVisionSection />}
         {sections.problem && <ProblemSection />}
         {sections.approach && <ApproachSection />}

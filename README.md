@@ -2,7 +2,7 @@
 
 Anywhere의 공식 기업 홈페이지입니다. **Anywhere**는 AI 기술로 더 나은 여행 경험을 만드는 트래블테크 스타트업이고, **TripAI**는 Anywhere의 첫 번째이자 핵심 서비스(AI 기반 맞춤형 여행 추천 플랫폼)입니다.
 
-**현재 공개 섹션**: Hero(Anywhere 로고 + 비행 중인 하늘) → 구름 통과 전환 → → About Anywhere(`#anywhere`) → Brand Film · Service 01 TripAI(`#film`) → Our Vision(`#our-vision`) → Footer
+**현재 공개 섹션**: Hero(Anywhere 로고 + 비행 중인 하늘) → 구름 통과 전환 → → About Anywhere(`#anywhere`) → Brand Film · Service 01 TripAI(`#film`) → Our Story & Journey(`#story`) → Our Vision(`#our-vision`) → Footer
 **내비게이션**: About · TripAI · Vision
 
 섹션 노출은 `src/config/site.ts` 의 `sections` 로 관리합니다. 이전 TripAI 서비스 홈페이지용 섹션(about, problem, approach, technology, vision, contact)은 코드에 그대로 보존되어 있고 `false` 로 숨겨져 있습니다. 새 섹션은 `aboutAnywhere`, `visionAnywhere` 키로 같은 방식으로 켜고 끕니다. (보존된 `about`·`vision` 섹션은 `#about`·`#vision` id를 쓰므로 새 섹션과 겹치지 않습니다.) 이전 내비게이션 구성은 `archivedNavItems` 에 남겨 두었습니다.
@@ -77,6 +77,7 @@ src/
 | Sky Journey (Hero → About) | 화면을 고정하고 스크롤 진행도에 맞춰 연속 재생(스크럽, 되감기 가능): 카메라가 구름층으로 전진하며 날개가 아래로 빠짐 → WebGL 구름 시트가 원근에 따라 다가와 스쳐 지나감(`src/lib/cloudFly.ts`) → 밝은 안개로 가득 찬 순간 장면 교체 → 안개가 걷히며 구름 위 하늘(`public/images/about/above-clouds.webp`) 위로 회사 소개 등장. 스크롤 구간은 화면 높이의 2배. 모션 축소 시 고정 없이 Hero와 About을 차례로 표시, WebGL 미지원 시 단순 안개 그라데이션 |
 | (이전) About Anywhere | 라벨 → 헤드라인(줄 단위 마스크) → 본문(시간차) → 마지막 문장 강조(종이비행기 심볼, TripAI 아래 하늘색 선) 순서로 1회 등장 |
 | Brand Film | 진입 시 아래에서 fade + scale (1회). 재생은 사용자 조작으로만, 스크롤 모션과 독립 |
+| Our Story & Journey | 왼쪽 고정 대형 헤드라인 + 오른쪽 스토리·여정 3단계. 점선 위로 실선 경로가 스크롤에 맞춰 그려지고(스크럽), 경로가 닿으면 각 단계가 등장(위로 스크롤 시 되돌아감). 배경은 아이보리·블루그레이에서 반투명 안개로 풀리며 Our Vision 상단에 겹쳐 이어짐. 문구는 `src/content/story.ts`(임시 브랜드 스토리) |
 | Our Vision | 구름 위 새벽 풍경이 스크롤에 따라 천천히 이동(스크럽), 헤드라인 줄과 본문이 1회 떠오름. 이 구간에서는 헤더가 어두운 톤으로 전환 |
 | About | 사진 clip-path 리빌 + 프레임 내부 패럴랙스 |
 | Problem | 고정 무대에서 정보 과잉 → 개인화 부족 → 준비 복잡성 장면 전환 후 한 줄로 정리 |
