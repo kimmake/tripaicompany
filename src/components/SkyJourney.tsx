@@ -130,6 +130,8 @@ export default function SkyJourney() {
             <canvas className="ja-gl" />
           </div>
           <div className="ja-shade" aria-hidden="true" />
+          {/* 아래쪽 구름이 옅은 안개로 풀리며 다음 섹션(Our First Journey) 배경색과 이어짐 */}
+          <div className="ja-fade" aria-hidden="true" />
           <div className="wrap ja-in">
             <SectionLabel className="ja-label" reveal={false}>
               About Anywhere

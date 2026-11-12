@@ -504,6 +504,9 @@
 .journey.ja-gl-ready .ja-gl { opacity: 1; }
 /* 하늘은 매우 밝아 네이비 텍스트를 사용. 상단을 살짝 밝혀 대비 확보 */
 .ja-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(248, 250, 252, .55) 0%, rgba(248, 250, 252, .18) 42%, rgba(248, 250, 252, 0) 60%); }
+.ja-fade { position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(180deg, rgba(233, 238, 244, 0) 0%, rgba(233, 238, 244, .55) 45%, rgba(233, 238, 244, .9) 78%, #E9EEF4 100%); pointer-events: none; }
+/* 구름 장면 바로 다음의 영상 섹션: 같은 구름 안개 색에서 시작해 점점 밝아짐 */
+.journey + .film { background: linear-gradient(180deg, #E9EEF4 0%, #EEF2F7 22%, #F4F7FA 48%, var(--color-cloud) 78%); }
 .ja-in { position: relative; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; padding-top: clamp(110px, 17vh, 170px); }
 .journey-about .ja-label { color: var(--color-sky-ink); }
 .journey-about .ja-label::after { content: ""; width: 28px; height: 1px; background: currentColor; opacity: .5; }
