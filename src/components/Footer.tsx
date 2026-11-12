@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { service, site, motion } from '../config/site';
+import { service, site, motion, visuals } from '../config/site';
 import { gsap, useGSAP, MQ } from '../lib/gsap';
 import { onAnchorClick } from '../lib/scroll';
 import { Link } from '../lib/router';
@@ -38,7 +38,7 @@ export default function Footer() {
   );
 
   return (
-    <footer ref={root} className="footer" data-header="dark">
+    <footer ref={root} className={`footer${visuals.visionPhoto ? '' : ' is-plain'}`} data-header="dark">
       <div className="ft-haze" aria-hidden="true" />
       <div className="wrap ft-in">
         <p className="ft-label">Anywhere · Travel Tech Startup</p>

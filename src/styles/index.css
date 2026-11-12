@@ -460,6 +460,9 @@
 
 /* ---------- Our Vision (기업 비전) ---------- */
 .av { position: relative; min-height: clamp(620px, 100svh, 900px); display: flex; align-items: center; overflow: clip; color: #fff; background: var(--color-navy); }
+/* 사진 없는 버전: 위는 앞 섹션 안개 끝 색(#3E4D66), 아래는 푸터 시작 색(#1E2F43)에 맞춰 이음매 없이 */
+.av.is-plain { background: radial-gradient(80% 60% at 78% 18%, rgba(122, 150, 186, .18), rgba(122, 150, 186, 0) 70%), linear-gradient(180deg, #3E4D66 0%, #2B3F58 38%, #22354C 70%, #1E2F43 100%); }
+.av.is-plain .av-title { text-shadow: none; }
 .av-media { position: absolute; inset: -9% 0; will-change: transform; }
 .av-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
 .av-shade { position: absolute; inset: 0; background:
@@ -546,6 +549,8 @@
 .footer { --ft-top: #1E2F43; --ft-haze: clamp(140px, 18vh, 200px); position: relative; color: #fff; background:
   radial-gradient(ellipse 70% 120px at 50% 0%, rgba(255, 196, 160, .07), rgba(255, 196, 160, 0) 100%),
   linear-gradient(180deg, var(--ft-top) 0%, #172840 38%, #122236 100%); }
+/* Vision 사진이 없을 때: 노을빛 글로우 없이 같은 네이비로 이어짐 */
+.footer.is-plain { background: linear-gradient(180deg, var(--ft-top) 0%, #172840 38%, #122236 100%); }
 /* Our Vision 하단에 겹치는 안개: 투명 → 푸터 시작색 (경계 없이 내려앉음) */
 .ft-haze { position: absolute; left: 0; right: 0; bottom: 100%; height: var(--ft-haze); background: linear-gradient(180deg, rgba(30, 47, 67, 0) 0%, rgba(30, 47, 67, .55) 55%, var(--ft-top) 100%); pointer-events: none; }
 .ft-in { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: clamp(64px, 8vw, 112px); padding-bottom: calc(28px + env(safe-area-inset-bottom)); }

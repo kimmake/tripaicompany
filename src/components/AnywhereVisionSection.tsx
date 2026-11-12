@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { motion } from '../config/site';
+import { motion, visuals } from '../config/site';
 import { gsap, useGSAP, MQ } from '../lib/gsap';
 import SectionLabel from './ui/SectionLabel';
 
@@ -45,23 +45,27 @@ export default function AnywhereVisionSection({ brief = false }: { brief?: boole
   );
 
   return (
-    <section ref={root} className="av" id="our-vision" data-header="dark" aria-labelledby="av-title">
+    <section ref={root} className={`av${visuals.visionPhoto ? '' : ' is-plain'}`} id="our-vision" data-header="dark" aria-labelledby="av-title">
+      {visuals.visionPhoto && (
+        <>
       <div className="av-media" aria-hidden="true">
-        <picture>
-          <source media="(max-width: 767px)" srcSet="/images/vision-m.webp" width={900} height={1600} />
-          <img
-            src="/images/vision.webp"
-            srcSet="/images/vision-1280.webp 1280w, /images/vision.webp 2400w"
-            sizes="100vw"
-            alt=""
-            width={2400}
-            height={1600}
-            loading="lazy"
-            decoding="async"
-          />
-        </picture>
-      </div>
-      <div className="av-shade" aria-hidden="true" />
+          <picture>
+            <source media="(max-width: 767px)" srcSet="/images/vision-m.webp" width={900} height={1600} />
+            <img
+              src="/images/vision.webp"
+              srcSet="/images/vision-1280.webp 1280w, /images/vision.webp 2400w"
+              sizes="100vw"
+              alt=""
+              width={2400}
+              height={1600}
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </div>
+        <div className="av-shade" aria-hidden="true" />
+        </>
+      )}
       <div className="wrap av-in">
         <SectionLabel className="av-label" reveal={false}>
           Our Vision

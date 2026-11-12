@@ -86,6 +86,12 @@ export const archivedNavItems: NavItem[] = [
  * 그 외 섹션의 스크롤 등장·패럴랙스·경로 드로잉 애니메이션은 sectionMotion 으로 켜고 끕니다.
  * (false: 모든 내용이 처음부터 그대로 보임. 버튼·링크의 hover 효과는 유지)
  */
+/** 이미지 사용 설정 */
+export const visuals = {
+  /** Our Vision 배경 풍경 사진 (false = 사진 없이 네이비 그라데이션. 사진 코드는 보존) */
+  visionPhoto: false,
+} as const;
+
 export const motion = {
   sectionMotion: false,
 } as const;
