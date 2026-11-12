@@ -166,7 +166,7 @@ export default function ProblemSection() {
   return (
     <section ref={root} className="problem" id="problem" aria-labelledby="problem-title">
       <div className="wrap problem-head">
-        <SectionLabel index="02">The Problem</SectionLabel>
+        <SectionLabel index="03">The Problem</SectionLabel>
         <SplitLines id="problem-title" className="h2" lines={['정보는 넘쳐나지만,', '나에게 맞는 여행은 찾기 어렵습니다.']} />
       </div>
 

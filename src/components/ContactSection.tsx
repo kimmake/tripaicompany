@@ -77,7 +77,7 @@ export default function ContactSection() {
     <section className="contact" id="contact" aria-labelledby="contact-title">
       <div className="wrap ct-grid">
         <div className="ct-l">
-          <SectionLabel index="06">Contact</SectionLabel>
+          <SectionLabel index="07">Contact</SectionLabel>
           <SplitLines id="contact-title" className="h2-en" lines={['Let’s Create', 'the Next Journey.']} />
           <p className="kr" data-reveal="fade">
             새로운 여행의 가능성을 함께 만들어갑니다.

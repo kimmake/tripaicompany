@@ -1,12 +1,14 @@
 import { useRef } from 'react';
 import { gsap, useGSAP, MQ } from '../lib/gsap';
 import { onAnchorClick } from '../lib/scroll';
+import HeroFilmPreview from './HeroFilmPreview';
 
 const VALUES = ['Personalization', 'Authenticity', 'Simplicity', 'Discovery'];
 
 /**
  * SECTION 01 — HERO
- * 시네마틱 인트로: 밝은 하늘(베일) → 카메라 줌 아웃 → 비행 경로 → 헤드라인 줄 단위 등장 → 슬로건 → 스크롤 유도.
+ * 시네마틱 인트로: 밝은 하늘(베일) → 카메라 줌 아웃 → 종이비행기가 경로를 그리며 비행 → 헤드라인 줄 단위 등장 → 슬로건 → 스크롤 유도.
+ * 우측 하단에는 브랜드 필름의 한 장면이 작은 창으로 재생됩니다 (HeroFilmPreview).
  */
 export default function HeroSection() {
   const root = useRef<HTMLElement>(null);
@@ -28,9 +30,25 @@ export default function HeroSection() {
           .from(q('.hero-title .mask > span'), { yPercent: 108, opacity: 0, duration: 1.4, stagger: 0.18 }, 1.3)
           .from(q('.hero-slogan'), { y: 18, opacity: 0, duration: 1.3 }, 2.1)
           .from(q('.hero-sub'), { y: 18, opacity: 0, duration: 1.3 }, 2.35)
-          .to(path ?? {}, { strokeDashoffset: 0, duration: 2.6, ease: 'power2.inOut' }, 2.2)
-          .from(q('.hero-path circle'), { opacity: 0, duration: 0.6 }, 4.4)
-          .from(q('.scroll-cue, .values'), { opacity: 0, duration: 1 }, 2.9);
+          .to(path ?? {}, { strokeDashoffset: 0, duration: 2.8, ease: 'power2.inOut' }, 2.2)
+          .from(q('.scroll-cue, .values'), { opacity: 0, duration: 1 }, 2.9)
+          .from(q('.hero-film'), { opacity: 0, y: 24, duration: 1.4 }, 3.2)
+          .from(q('.hero-path .ring'), { opacity: 0, duration: 0.6 }, 4.9);
+
+        // 종이비행기가 선을 그리며 날아가 목적지에 도착 (브랜드 필름의 심볼과 연결)
+        if (path) {
+          tl.fromTo(
+            q('.hero-plane'),
+            { opacity: 0 },
+            {
+              opacity: 1,
+              duration: 2.8,
+              ease: 'power2.inOut',
+              motionPath: { path, align: path, alignOrigin: [0.5, 0.5], autoRotate: true },
+            },
+            2.2,
+          );
+        }
 
         // 매우 느린 카메라 드리프트
         gsap.to(q('.hero-drift'), {
@@ -43,7 +61,7 @@ export default function HeroSection() {
           repeat: -1,
           yoyo: true,
         });
-        gsap.to(q('.hero-path .ring'), { scale: 3.2, opacity: 0, duration: 2.8, delay: 4.6, repeat: -1, ease: 'power1.out' });
+        gsap.fromTo(q('.hero-path .ring'), { scale: 1, opacity: 0.8, transformOrigin: '50% 50%' }, { scale: 3.2, opacity: 0, duration: 2.8, delay: 5.2, repeat: -1, ease: 'power1.out', immediateRender: false });
       });
 
       // 데스크톱 전용 패럴랙스: 이미지와 텍스트가 서로 다른 속도로 이동
@@ -79,9 +97,15 @@ export default function HeroSection() {
       </div>
       <div className="hero-shade" aria-hidden="true" />
       <svg className="hero-path" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <path d="M-40 780 C 280 760, 520 640, 760 560 S 1180 300, 1330 210" />
-        <circle className="ring" cx="1330" cy="210" r="5" />
-        <circle cx="1330" cy="210" r="3.5" />
+        <path d="M-40 780 C 280 760, 520 640, 760 560 S 1100 330, 1190 250" />
+        <circle className="ring" cx="1190" cy="250" r="6" />
+        {/* 모션 축소 시에는 목적지에 정지한 상태로 표시 */}
+        <g className="hero-plane" transform="translate(1190 250) rotate(-40)">
+          <g transform="rotate(45) translate(-12 -12)">
+            <path d="M21.5 2.5 2.8 10.2l7.6 3.4 3.4 7.6z" />
+            <path d="M21.5 2.5 10.4 13.6" />
+          </g>
+        </g>
       </svg>
       <div className="hero-veil" aria-hidden="true" />
 
@@ -110,6 +134,7 @@ export default function HeroSection() {
               <li key={v}>{v}</li>
             ))}
           </ul>
+          <HeroFilmPreview />
         </div>
       </div>
     </section>

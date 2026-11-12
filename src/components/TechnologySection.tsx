@@ -106,7 +106,7 @@ export default function TechnologySection() {
         <div className="wrap">
           <div className="tech-head">
             <div className="l">
-              <SectionLabel index="04">Technology</SectionLabel>
+              <SectionLabel index="05">Technology</SectionLabel>
               <SplitLines id="tech-title" className="h2-en" lines={['Technology that', 'understands your journey.']} />
             </div>
             <p className="r" data-reveal="fade">

@@ -2,19 +2,21 @@ import { useRef } from 'react';
 import { gsap, useGSAP, MQ } from '../lib/gsap';
 import SectionLabel from './ui/SectionLabel';
 import SplitLines from './ui/SplitLines';
+import { PlaneMark } from './ui/Logo';
+import { onAnchorClick } from '../lib/scroll';
 
 const STEPS = [
-  { k: 'STEP 01', en: 'Understand', ko: '여행자를 이해합니다.', desc: '여행 예산, 기간, 취향, 선호 활동 등을 바탕으로 개인의 여행 성향을 파악합니다.' },
-  { k: 'STEP 02', en: 'Discover', ko: '가능성을 발견합니다.', desc: '여행자의 조건과 여행 정보를 연결하여 어울리는 여행지를 탐색합니다.' },
-  { k: 'STEP 03', en: 'Recommend', ko: '나에게 맞는 여행을 제안합니다.', desc: '추천 여행지와 관련 정보를 개인 맞춤형 여행 보고서로 제공합니다.' },
+  { k: 'STEP 01', en: 'Understand', ko: '여행자를 이해합니다.', key: '예산 · 여행 기간 · 여행 취향 파악', desc: '여행 예산, 기간, 취향, 선호 활동 등을 바탕으로 개인의 여행 성향을 파악합니다.' },
+  { k: 'STEP 02', en: 'Discover', ko: '가능성을 발견합니다.', key: '조건에 맞는 여행지 탐색', desc: '여행자의 조건과 여행 정보를 연결하여 어울리는 여행지를 탐색합니다.' },
+  { k: 'STEP 03', en: 'Recommend', ko: '나에게 맞는 여행을 제안합니다.', key: '맞춤형 여행지와 여행 정보 제공', desc: '추천 여행지와 관련 정보를 개인 맞춤형 여행 보고서로 제공합니다.' },
 ] as const;
 
-/* 아래 값은 모두 서비스 작동 원리를 설명하기 위한 '예시' 입력입니다. */
+/* 아래 값은 서비스 작동 원리를 설명하기 위한 '예시' 입력입니다. 브랜드 필름 속 예시와 같은 조건을 사용해 흐름을 이어갑니다. */
 const PREFS = [
-  { key: '예산', val: '1인 150만 원 내외', left: '6%', top: '10%', fx: -60, fy: -40, cx: 150, cy: 150, icon: 'wallet' },
-  { key: '기간', val: '4박 5일', left: '58%', top: '7%', fx: 60, fy: -40, cx: -150, cy: 160, icon: 'calendar' },
-  { key: '취향', val: '조용한 자연 · 휴식', left: '4%', top: '70%', fx: -60, fy: 40, cx: 160, cy: -150, icon: 'heart' },
-  { key: '선호 활동', val: '산책 · 로컬 카페', left: '60%', top: '74%', fx: 60, fy: 40, cx: -160, cy: -170, icon: 'walk' },
+  { key: '여행 예산', val: '100만 원', left: '6%', top: '10%', fx: -60, fy: -40, cx: 150, cy: 150, icon: 'wallet' },
+  { key: '여행 기간', val: '4박 5일', left: '58%', top: '7%', fx: 60, fy: -40, cx: -150, cy: 160, icon: 'calendar' },
+  { key: '여행 스타일', val: '자연과 휴식', left: '4%', top: '70%', fx: -60, fy: 40, cx: 160, cy: -150, icon: 'leaf' },
+  { key: '선호 활동', val: '맛집 탐방', left: '60%', top: '74%', fx: 60, fy: 40, cx: -160, cy: -170, icon: 'fork' },
 ] as const;
 
 const NODES = [
@@ -26,16 +28,16 @@ const NODES = [
 
 const RECS = [
   { img: '/images/d-peaks.webp', title: '추천 B · 산과 숲의 휴식', tags: ['자연', '예산 범위'], tx: -108, r: -6, on: false },
-  { img: '/images/d-resort.webp', title: '추천 C · 조용한 리조트', tags: ['휴식', '일정 적합'], tx: 108, r: 6, on: false },
-  { img: '/images/d-turq.webp', title: '추천 A · 호수와 산책길', tags: ['취향 일치', '4박 5일'], tx: 0, r: 0, on: true },
+  { img: '/images/d-turq.webp', title: '추천 C · 호수와 산책길', tags: ['휴식', '일정 적합'], tx: 108, r: 6, on: false },
+  { img: '/images/d-resort.webp', title: '추천 A · 해변 휴양과 미식', tags: ['자연과 휴식', '맛집 탐방'], tx: 0, r: 0, on: true },
 ] as const;
 
 function PrefIcon({ name }: { name: string }) {
   const d: Record<string, React.ReactNode> = {
     wallet: (<><rect x="2.5" y="5" width="15" height="10" rx="2" /><path d="M2.5 8.5h15" /></>),
     calendar: (<><rect x="3" y="4" width="14" height="13" rx="2" /><path d="M3 8h14M7 2.5v3M13 2.5v3" /></>),
-    heart: <path d="M10 17s-6-3.6-6-8.2A3.3 3.3 0 0 1 10 6.6a3.3 3.3 0 0 1 6 2.2C16 13.4 10 17 10 17z" />,
-    walk: (<><circle cx="11" cy="4" r="1.6" /><path d="M8 18l2-6 3 2v4M7 9l3-2 3 3 2 1" /></>),
+    leaf: (<><path d="M4 16c0-7 4.5-11 12-12 0 7.5-4 12-11 12" /><path d="M4 16l7-7" /></>),
+    fork: (<><path d="M6 2.5v6a2 2 0 0 0 4 0v-6M8 8.5v9" /><path d="M14 17.5v-15c2 1 3 3.5 3 6.5h-3" /></>),
   };
   return <svg viewBox="0 0 20 20" aria-hidden="true">{d[name]}</svg>;
 }
@@ -68,9 +70,11 @@ export default function ApproachSection() {
           .fromTo(s3, { opacity: 0.3 }, { opacity: 1, duration: 5 }, 60)
           .fromTo(q('.steps .bar'), { scaleY: 0 }, { scaleY: 1, duration: 100 }, 0);
 
-        // 1. 취향 카드 등장 → 2. 중앙으로 모임
+        // 1. 취향 카드 등장 → 하나씩 확인(체크) → 2. 종이비행기 중심으로 모임
         q('.pref').forEach((el, i) => {
+          const ck = el.querySelector('.ck i');
           tl.fromTo(el, { opacity: 0, x: D(el, 'fx'), y: D(el, 'fy') }, { opacity: 1, x: 0, y: 0, duration: 7, ease: 'power2.out' }, i * 0.8)
+            .fromTo(ck, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 2.5, ease: 'back.out(2)' }, 8 + i * 2)
             .to(el, { opacity: 0, x: D(el, 'cx'), y: D(el, 'cy'), scale: 0.3, duration: 11, ease: 'power2.in' }, 17 + i * 0.4);
         });
         tl.fromTo(q('.core'), { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 8, ease: 'back.out(1.4)' }, 22)
@@ -108,12 +112,19 @@ export default function ApproachSection() {
     <section ref={root} className="approach" id="approach" aria-labelledby="approach-title">
       <div className="wrap ap-head">
         <div className="l">
-          <SectionLabel index="03">Our Approach</SectionLabel>
+          <SectionLabel index="04">Our Approach</SectionLabel>
           <SplitLines id="approach-title" className="h2" lines={['복잡한 선택은 간단하게.', '여행의 가능성은 더 넓게.']} />
         </div>
-        <p className="body r" data-reveal="fade">
-          TripAI는 여행자를 이해하는 것에서 시작해, 여행 정보와 연결하고, 개인에게 맞는 여행을 제안하는 세 단계로 접근합니다.
-        </p>
+        <div className="r ap-lead" data-reveal="fade">
+          <p className="body">
+            브랜드 필름 속 추천 과정을 세 단계로 풀어 설명합니다. 여행자를 이해하는 것에서 시작해, 여행 정보와 연결하고, 개인에게 맞는 여행을
+            제안합니다.
+          </p>
+          <a className="textlink" href="#film" onClick={(e) => onAnchorClick(e)}>
+            <PlaneMark className="tl-plane" />
+            브랜드 필름 다시 보기
+          </a>
+        </div>
       </div>
 
       <div className="story ap-track">
@@ -123,11 +134,11 @@ export default function ApproachSection() {
               <li className="bar" aria-hidden="true" role="presentation" />
               {STEPS.map((s) => (
                 <li className="step" key={s.k}>
-                  <span className="k">{s.k}</span>
-                  <h3>
-                    {s.ko}
-                    <span>{s.en}</span>
-                  </h3>
+                  <span className="k">
+                    {s.k} · {s.en}
+                  </span>
+                  <h3>{s.ko}</h3>
+                  <span className="kw">{s.key}</span>
                   <p>{s.desc}</p>
                 </li>
               ))}
@@ -144,16 +155,26 @@ export default function ApproachSection() {
                     <small>{p.key}</small>
                     <b>{p.val}</b>
                   </span>
+                  <span className="ck">
+                    <i>
+                      <svg viewBox="0 0 12 12">
+                        <path d="M3 6.2l2 2 4-4.4" />
+                      </svg>
+                    </i>
+                  </span>
                 </div>
               ))}
 
               <div className="core">
+                <span className="core-plane">
+                  <PlaneMark />
+                </span>
                 <small>TRAVEL PROFILE</small>
                 <p>여행 성향 이해</p>
                 <div className="t">
                   <span>자연</span>
                   <span>휴식</span>
-                  <span>4박 5일</span>
+                  <span>미식</span>
                 </div>
               </div>
 
@@ -172,6 +193,7 @@ export default function ApproachSection() {
 
               {RECS.map((r) => (
                 <div className={`rec${r.on ? ' on' : ''}`} key={r.title} data-tx={r.tx} data-r={r.r}>
+                  {r.on && <span className="badge">나에게 맞는 여행지</span>}
                   <img src={r.img} alt="" width={640} height={480} loading="lazy" decoding="async" />
                   <h5>{r.title}</h5>
                   <div className="chips">{r.tags.map((t) => <span key={t}>{t}</span>)}</div>
@@ -181,7 +203,10 @@ export default function ApproachSection() {
               <div className="report">
                 <header>
                   <div>
-                    <small>MY TRAVEL REPORT</small>
+                    <small>
+                      <PlaneMark className="rp-plane" />
+                      MY TRAVEL REPORT
+                    </small>
                     <h4>나의 맞춤 여행 보고서</h4>
                   </div>
                   <span>예시</span>
@@ -189,13 +214,13 @@ export default function ApproachSection() {
                 <div className="rrow">
                   <b>추천 여행지</b>
                   <div className="rdest">
-                    <img src="/images/d-turq.webp" alt="" width={640} height={480} loading="lazy" decoding="async" />
-                    <p>추천 A · 호수와 산책길</p>
+                    <img src="/images/d-resort.webp" alt="" width={640} height={480} loading="lazy" decoding="async" />
+                    <p>추천 A · 해변 휴양과 미식</p>
                   </div>
                 </div>
                 <div className="rrow">
                   <b>추천 이유</b>
-                  <div className="chips"><span>조용한 자연</span><span>산책 동선</span><span>로컬 카페</span></div>
+                  <div className="chips"><span>자연과 휴식</span><span>맛집 탐방</span><span>예산 100만 원</span></div>
                 </div>
                 <div className="rrow">
                   <b>일정 구성</b>
@@ -224,25 +249,29 @@ export default function ApproachSection() {
                 <div className="mini" aria-hidden="true">
                   {i === 0 && (
                     <div className="chips" style={{ position: 'absolute', inset: 0, alignContent: 'center', justifyContent: 'center', padding: 16 }}>
-                      {['예산', '기간', '취향', '선호 활동'].map((c) => <span key={c} style={{ background: '#fff' }}>{c}</span>)}
+                      {['100만 원', '4박 5일', '자연과 휴식', '맛집 탐방'].map((c) => <span key={c} style={{ background: '#fff' }}>{c}</span>)}
                     </div>
                   )}
                   {i === 1 && (
                     <div style={{ position: 'absolute', inset: 14, display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 8 }}>
-                      {['/images/d-turq.webp', '/images/d-peaks.webp', '/images/d-resort.webp'].map((src) => (
+                      {['/images/d-resort.webp', '/images/d-turq.webp', '/images/d-peaks.webp'].map((src) => (
                         <img key={src} src={src} alt="" width={640} height={480} loading="lazy" decoding="async" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 10 }} />
                       ))}
                     </div>
                   )}
                   {i === 2 && (
                     <div style={{ position: 'absolute', inset: 14, background: '#fff', borderRadius: 12, padding: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                      <span className="num">MY TRAVEL REPORT</span>
+                      <span className="num" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                        <PlaneMark className="rp-plane" />
+                        MY TRAVEL REPORT
+                      </span>
                       <div className="bars">{[80, 64, 90, 48].map((w) => <i key={w} style={{ width: `${w}%` }} />)}</div>
                     </div>
                   )}
                 </div>
                 <span className="num">{s.k} — {s.en}</span>
                 <h3 className="ptitle kr">{s.ko}</h3>
+                <span className="kw">{s.key}</span>
                 <p className="pdesc">{s.desc}</p>
               </li>
             ))}

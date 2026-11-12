@@ -4,11 +4,11 @@ type LogoProps = {
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 };
 
-/** TripAI 로고: 원(여정) 위의 점(목적지) — 경로 모티프의 시작점 */
+/** TripAI 로고: 종이비행기 심볼 + 워드마크 (브랜드 필름의 심볼과 동일한 모티프) */
 export default function Logo({ href = '#top', label = 'TripAI 홈으로', onClick }: LogoProps) {
   return (
     <a className="logo" href={href} aria-label={label} onClick={onClick}>
-      <LogoMark />
+      <PlaneMark />
       <span aria-hidden="true">
         Trip<b>AI</b>
       </span>
@@ -16,11 +16,12 @@ export default function Logo({ href = '#top', label = 'TripAI 홈으로', onClic
   );
 }
 
-export function LogoMark() {
+/** 종이비행기 심볼 (24×24, stroke) */
+export function PlaneMark({ className = 'plane' }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <circle className="o" cx="12" cy="12" r="9" />
-      <circle className="d" cx="18.4" cy="5.6" r="2.6" />
+    <svg className={className} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M21.5 2.5 2.8 10.2l7.6 3.4 3.4 7.6z" />
+      <path d="M21.5 2.5 10.4 13.6" />
     </svg>
   );
 }

@@ -66,7 +66,7 @@ export default function VisionSection() {
         <div className="vi-shade" aria-hidden="true" />
         <div className="wrap vi-in">
           <p className="label">
-            <i>05</i>Our Vision
+            <i>06</i>Our Vision
           </p>
           <h2 className="vi-title" id="vision-title">
             <span className="w">Every</span> <span className="w">Journey,</span>

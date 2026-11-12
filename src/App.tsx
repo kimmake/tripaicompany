@@ -1,6 +1,7 @@
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
+import BrandFilmSection from './components/BrandFilmSection';
 import ProblemSection from './components/ProblemSection';
 import ApproachSection from './components/ApproachSection';
 import TechnologySection from './components/TechnologySection';
@@ -18,6 +19,7 @@ export default function App() {
       <main id="main">
         <HeroSection />
         <AboutSection />
+        <BrandFilmSection />
         <ProblemSection />
         <ApproachSection />
         <TechnologySection />
