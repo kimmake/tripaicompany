@@ -177,7 +177,7 @@ export default function Header() {
             ))}
           </ul>
           <p>
-            {service.name}는 {site.name}가 개발하고 있는 {service.descriptor}입니다.
+            {site.name}는 AI 트래블테크 스타트업이며, {service.name}는 그 첫 번째 핵심 서비스입니다.
           </p>
         </div>
       )}

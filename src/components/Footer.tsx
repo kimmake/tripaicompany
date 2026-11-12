@@ -12,7 +12,7 @@ export default function Footer() {
           <div className="ft-brand">
             <Logo label={`${site.name} 맨 위로`} onClick={(e) => onAnchorClick(e)} />
             <p>
-              {service.name}는 {site.name}의 첫 번째 프로젝트입니다.
+              {site.name}는 AI 트래블테크 스타트업입니다. {service.name}는 {site.name}의 첫 번째 서비스입니다.
             </p>
           </div>
           <nav aria-label="푸터 메뉴">

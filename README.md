@@ -1,10 +1,11 @@
 # Anywhere — Official Website
 
-Anywhere(회사·팀 브랜드)의 공식 홈페이지입니다. TripAI는 Anywhere가 개발하고 있는 AI 기반 맞춤형 여행 추천 서비스이며, 홈페이지는 **Anywhere → TripAI** 관계를 중심으로 구성됩니다.
+Anywhere의 공식 기업 홈페이지입니다. **Anywhere**는 AI 기술로 더 나은 여행 경험을 만드는 트래블테크 스타트업이고, **TripAI**는 Anywhere의 첫 번째이자 핵심 서비스(AI 기반 맞춤형 여행 추천 플랫폼)입니다.
 
-**현재 공개 섹션**: Hero(Anywhere presents TripAI) → Project 01 · TripAI 브랜드 필름 → Footer
+**현재 공개 섹션**: Hero(Anywhere presents TripAI) → About Anywhere(`#anywhere`) → Brand Film · Service 01 TripAI(`#film`) → Our Vision(`#our-vision`) → Footer
+**내비게이션**: About · TripAI · Vision
 
-나머지 섹션(About, The Problem, Our Approach, Technology, Vision, Contact)은 코드에 그대로 보존되어 있고 화면에서만 숨겨져 있습니다. `src/config/site.ts` 의 `sections` 값을 `true` 로 바꾸면 다시 노출됩니다. 이전 내비게이션 구성은 같은 파일의 `archivedNavItems` 에 남겨 두었습니다.
+섹션 노출은 `src/config/site.ts` 의 `sections` 로 관리합니다. 이전 TripAI 서비스 홈페이지용 섹션(about, problem, approach, technology, vision, contact)은 코드에 그대로 보존되어 있고 `false` 로 숨겨져 있습니다. 새 섹션은 `aboutAnywhere`, `visionAnywhere` 키로 같은 방식으로 켜고 끕니다. (보존된 `about`·`vision` 섹션은 `#about`·`#vision` id를 쓰므로 새 섹션과 겹치지 않습니다.) 이전 내비게이션 구성은 `archivedNavItems` 에 남겨 두었습니다.
 
 ## 실행
 
@@ -46,7 +47,8 @@ src/
   lib/useReveals.ts       data-reveal="lines|fade|clip" 진입 모션
   lib/scroll.ts           앵커 이동(부드러운 스크롤 + 포커스 이동)
   components/
-    Header  HeroSection  AboutSection  BrandFilmSection
+    Header  HeroSection  AnywhereAboutSection  BrandFilmSection  AnywhereVisionSection
+    (보존·숨김) AboutSection
     ProblemSection  ApproachSection  TechnologySection  VisionSection
     ContactSection  Footer
     ui/  Logo(종이비행기 심볼)  Icons  SectionLabel  SplitLines  VideoPlayer
@@ -72,7 +74,9 @@ src/
 | 섹션 | 모션 |
 | --- | --- |
 | Hero | 한 번만 재생되고 최종 화면에서 멈추는 브랜드 시퀀스: Anywhere 등장(0–2초) → 위로 이동·축소, 연결선과 presents, 종이비행기 출발(2–4초) → 비행기가 지나간 자리에 TripAI 등장(4–6초) → 서비스 설명과 함께 최종 구성 유지(6–8초). 경로는 웹폰트 로딩 후 실제 배치를 측정해 만듭니다. 배경은 사진을 레이어로 분리해 비행 중인 창밖처럼 연출: 하늘의 아주 느린 전진·드리프트, 서로 다른 속도로 흐르는 구름 안개 2겹, 날개의 미세한 진동, 카메라 호흡. 데스크톱 스크롤 패럴랙스(하늘 > 날개) |
+| About Anywhere | 라벨 → 헤드라인(줄 단위 마스크) → 본문(시간차) → 마지막 문장 강조(종이비행기 심볼, TripAI 아래 하늘색 선) 순서로 1회 등장 |
 | Brand Film | 진입 시 아래에서 fade + scale (1회). 재생은 사용자 조작으로만, 스크롤 모션과 독립 |
+| Our Vision | 구름 위 새벽 풍경이 스크롤에 따라 천천히 이동(스크럽), 헤드라인 줄과 본문이 1회 떠오름. 이 구간에서는 헤더가 어두운 톤으로 전환 |
 | About | 사진 clip-path 리빌 + 프레임 내부 패럴랙스 |
 | Problem | 고정 무대에서 정보 과잉 → 개인화 부족 → 준비 복잡성 장면 전환 후 한 줄로 정리 |
 | Approach | 취향 카드 → 성향 파악 → 여행지 연결 → 추천 카드 → 맞춤 보고서 (작동 원리를 설명하는 예시 연출) |

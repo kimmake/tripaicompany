@@ -17,7 +17,7 @@ export const site = {
   contactEndpoint: clean(import.meta.env.VITE_CONTACT_ENDPOINT),
 } as const;
 
-/** Anywhere가 개발 중인 서비스 */
+/** Anywhere의 첫 번째이자 핵심 서비스 */
 export const service = {
   name: 'TripAI',
   descriptor: 'AI 기반 맞춤형 여행 추천 서비스',
@@ -25,11 +25,16 @@ export const service = {
 } as const;
 
 /**
- * 섹션 노출 설정.
- * 현재 단계에서는 Hero와 Brand Film만 공개합니다. 나머지 섹션 컴포넌트는 코드에 그대로 보존되어 있으며
- * 값을 true로 바꾸면 다시 노출됩니다. (Hero는 항상 표시)
+ * 섹션 노출 설정. (Hero는 항상 표시)
+ * 공개: About Anywhere → Brand Film(TripAI) → Our Vision
+ * 이전 TripAI 서비스 홈페이지용 섹션(about, problem, approach, technology, vision, contact)은 코드에 보존되어 있으며
+ * 값을 true로 바꾸면 다시 노출됩니다.
  */
 export const sections = {
+  /** About Anywhere — 기업 소개 (id: anywhere) */
+  aboutAnywhere: true,
+  /** Our Vision — 기업 비전 (id: our-vision) */
+  visionAnywhere: true,
   about: false,
   brandFilm: true,
   problem: false,
@@ -41,8 +46,12 @@ export const sections = {
 
 export type NavItem = { id: string; label: string; kicker?: string; note?: string };
 
-/** 현재 공개된 섹션 기준 내비게이션 — TripAI는 Anywhere의 프로젝트로 표시 */
-export const navItems: NavItem[] = [{ id: 'film', label: 'TripAI', kicker: 'Project', note: 'Anywhere의 첫 번째 여정' }];
+/** 현재 공개된 섹션 기준 내비게이션 */
+export const navItems: NavItem[] = [
+  { id: 'anywhere', label: 'About', note: 'Anywhere 소개' },
+  { id: 'film', label: 'TripAI', note: 'Anywhere의 첫 번째 서비스' },
+  { id: 'our-vision', label: 'Vision', note: '우리가 그리는 여행의 미래' },
+];
 
 /** 이전(TripAI 서비스 홈페이지) 구성의 내비게이션 — 섹션을 다시 노출할 때 참고용으로 보존 */
 export const archivedNavItems: NavItem[] = [
