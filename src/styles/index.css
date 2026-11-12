@@ -649,8 +649,12 @@
 .ph-media { position: absolute; inset: 0; }
 .ph-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 52%; }
 .ph-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(248, 250, 252, .6) 0%, rgba(248, 250, 252, .25) 45%, rgba(248, 250, 252, .1) 70%, var(--color-cloud) 100%); }
-.ph-in { position: relative; padding-top: 140px; padding-bottom: clamp(56px, 7vw, 96px); display: flex; flex-direction: column; gap: 20px; }
+.ph-in { position: relative; padding-top: 160px; padding-bottom: clamp(56px, 7vw, 96px); display: flex; flex-direction: column; gap: 20px; }
 .page-hero .ph-label { color: var(--color-sky-ink); }
+.ph-back { position: absolute; left: 0; right: 0; top: 84px; z-index: 1; }
+.back-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px 0 12px; border: 1px solid rgba(20, 40, 63, .18); border-radius: 999px; background: rgba(248, 250, 252, .7); color: var(--color-navy); text-decoration: none; font-family: var(--font-label); font-size: 14px; font-weight: 500; transition: background-color .3s, border-color .3s; }
+.back-link:hover { background: rgba(248, 250, 252, .95); border-color: rgba(20, 40, 63, .32); }
+.back-ico { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.6; transform: rotate(180deg); }
 .ph-title { margin: 0; font-weight: 600; font-size: clamp(38px, 5.4vw, 80px); line-height: 1.14; letter-spacing: -.045em; }
 .ph-title .ln { display: block; }
 .ph-lead { margin: 4px 0 0; max-width: 620px; font-size: clamp(17px, 1.5vw, 21px); line-height: 1.7; color: var(--color-ink); letter-spacing: -.02em; }

@@ -1,4 +1,6 @@
 import SectionLabel from './ui/SectionLabel';
+import { ArrowRight } from './ui/Icons';
+import { Link } from '../lib/router';
 
 type Props = { label: string; title: readonly string[]; lead?: string; image?: string };
 
@@ -10,6 +12,13 @@ export default function PageHero({ label, title, lead, image = '/images/about/ab
         <img src={image} alt="" width={1256} height={829} decoding="async" fetchPriority="high" />
       </div>
       <div className="ph-shade" aria-hidden="true" />
+      {/* 상세 페이지 → 메인으로 돌아가기 */}
+      <div className="wrap ph-back">
+        <Link to="/" className="back-link">
+          <ArrowRight className="back-ico" />
+          Home
+        </Link>
+      </div>
       <div className="wrap ph-in">
         <SectionLabel className="ph-label" reveal={false}>
           {label}
