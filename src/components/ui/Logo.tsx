@@ -4,8 +4,17 @@ type LogoProps = {
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 };
 
-/** TripAI 로고: 종이비행기 심볼 + 워드마크 (브랜드 필름의 심볼과 동일한 모티프) */
-export default function Logo({ href = '#top', label = 'TripAI 홈으로', onClick }: LogoProps) {
+/** Anywhere 워드마크 (회사 로고). 공식 로고 파일이 정해지면 이 컴포넌트만 교체하면 됩니다. */
+export default function Logo({ href = '#top', label = 'Anywhere 홈으로', onClick }: LogoProps) {
+  return (
+    <a className="logo logo-anywhere" href={href} aria-label={label} onClick={onClick}>
+      <span aria-hidden="true">Anywhere</span>
+    </a>
+  );
+}
+
+/** TripAI 로고 (서비스 로고: 종이비행기 심볼 + 워드마크) — 서비스 관련 영역에서 사용 */
+export function TripAILogo({ href = '#film', label = 'TripAI', onClick }: LogoProps) {
   return (
     <a className="logo" href={href} aria-label={label} onClick={onClick}>
       <PlaneMark />
@@ -16,7 +25,7 @@ export default function Logo({ href = '#top', label = 'TripAI 홈으로', onClic
   );
 }
 
-/** 종이비행기 심볼 (24×24, stroke) */
+/** 종이비행기 심볼 (24×24, stroke) — TripAI의 심볼 */
 export function PlaneMark({ className = 'plane' }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" aria-hidden="true" focusable="false">

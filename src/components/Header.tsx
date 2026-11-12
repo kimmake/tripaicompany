@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { navItems } from '../config/site';
+import { navItems, sections, service, site } from '../config/site';
 import { onAnchorClick } from '../lib/scroll';
 import { gsap, useGSAP, MQ } from '../lib/gsap';
 import Logo from './ui/Logo';
@@ -126,14 +126,17 @@ export default function Header() {
                 aria-current={active === n.id ? 'true' : undefined}
                 onClick={(e) => onAnchorClick(e)}
               >
+                {n.kicker && <span className="nav-k">{n.kicker}</span>}
                 {n.label}
               </a>
             ))}
           </nav>
-          <a className="cta" href="#contact" onClick={(e) => onAnchorClick(e)}>
-            <span>Get in touch</span>
-            <ArrowRight />
-          </a>
+          {sections.contact && (
+            <a className="cta" href="#contact" onClick={(e) => onAnchorClick(e)}>
+              <span>Get in touch</span>
+              <ArrowRight />
+            </a>
+          )}
           <button
             ref={burgerRef}
             className="burger"
@@ -165,12 +168,17 @@ export default function Header() {
               <li key={n.id}>
                 <a href={`#${n.id}`} onClick={(e) => onAnchorClick(e, close)}>
                   <small>{String(i + 1).padStart(2, '0')}</small>
-                  {n.label}
+                  <span className="mnav-label">
+                    {n.label}
+                    {n.note && <em>{n.note}</em>}
+                  </span>
                 </a>
               </li>
             ))}
           </ul>
-          <p>당신의 취향이 여행이 되는 순간.</p>
+          <p>
+            {service.name}는 {site.name}가 개발하고 있는 {service.descriptor}입니다.
+          </p>
         </div>
       )}
     </>

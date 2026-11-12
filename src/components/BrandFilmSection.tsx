@@ -17,7 +17,8 @@ const FILM_TEXT = [
 ];
 
 /**
- * SECTION — BRAND FILM (About 다음)
+ * SECTION — BRAND FILM · Our First Journey
+ * Anywhere가 개발하는 대표 프로젝트 TripAI를 소개합니다. (영상 내용은 원본 그대로)
  * 16:9 · 최대 너비 1100px · 사용자 조작으로 재생되는 40초 브랜드 영상.
  * 진입 모션(fade + scale)은 재생과 독립적으로 한 번만 실행됩니다.
  */
@@ -46,14 +47,15 @@ export default function BrandFilmSection() {
   return (
     <section ref={root} className="film" id="film" aria-labelledby="film-title">
       <div className="wrap film-head">
-        <SectionLabel index="02" className="center">
-          Brand Film
+        <SectionLabel index="01" className="center">
+          Project — TripAI
         </SectionLabel>
-        <SplitLines id="film-title" className="h2" lines={['여행을 이해하는 새로운 방법.']} />
+        <SplitLines id="film-title" className="h2-en film-title" lines={['Our First Journey.']} />
+        <p className="film-sub" data-reveal="fade">
+          Anywhere의 첫 번째 여정, TripAI.
+        </p>
         <p className="body" data-reveal="fade">
-          여행자의 취향과 조건을 이해하고, 수많은 여행지 중 나에게 어울리는 선택을 찾아가는 과정.{' '}
-          <br />
-          TripAI가 제안하는 새로운 여행 경험을 만나보세요.
+          TripAI는 여행자의 취향과 조건을 바탕으로 개인에게 어울리는 여행지를 추천하는 AI 기반 여행 플랫폼입니다.
         </p>
       </div>
 
@@ -64,7 +66,7 @@ export default function BrandFilmSection() {
             poster={brandFilm.poster}
             title={brandFilm.title}
             durationHint={brandFilm.duration}
-            ctaLabel="Brand Film 보기"
+            ctaLabel="TripAI 필름 보기"
           />
         </div>
         <details className="film-text" data-reveal="fade">

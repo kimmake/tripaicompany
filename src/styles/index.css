@@ -85,11 +85,13 @@
 .logo .plane { width: 22px; height: 22px; fill: none; stroke: var(--logo-accent); stroke-width: 1.7; stroke-linejoin: round; stroke-linecap: round; transition: transform .6s var(--ease-brand); }
 .logo:hover .plane { transform: translate(2px, -2px); }
 .logo b { font-weight: 400; color: var(--logo-accent); }
+.logo-anywhere { font-weight: 500; font-size: 21px; letter-spacing: -.035em; }
 .hdr.is-scrolled:not(.is-dark) .logo, .footer .logo { --logo-accent: var(--color-sky-ink); }
 .nav { display: flex; align-items: center; gap: 34px; }
 .nav a { color: inherit; text-decoration: none; font-family: var(--font-label); font-size: 14px; font-weight: 500; position: relative; padding: 12px 0; opacity: .88; transition: opacity .3s; }
 .nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 6px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease-brand); }
 .nav a:hover, .nav a[aria-current="true"] { opacity: 1; }
+.nav-k { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .62; margin-right: 10px; }
 .nav a:hover::after, .nav a[aria-current="true"]::after { transform: scaleX(1); transform-origin: left; }
 .cta { display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid currentColor; color: inherit; text-decoration: none; font-family: var(--font-label); font-size: 14px; font-weight: 500; position: relative; overflow: clip; isolation: isolate; transition: color .4s var(--ease-brand), border-color .4s var(--ease-brand); }
 .cta::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--color-navy); transform: translateY(101%); transition: transform .5s var(--ease-brand); }
@@ -103,6 +105,8 @@
 .mnav-top { display: flex; align-items: center; justify-content: space-between; height: 64px; }
 .mnav ul { list-style: none; margin: auto 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
 .mnav li a { display: flex; align-items: baseline; gap: 16px; color: #fff; text-decoration: none; font-family: var(--font-display); font-weight: 300; font-size: clamp(34px, 10vw, 44px); letter-spacing: -.04em; padding: 8px 0; min-height: 44px; }
+.mnav-label { display: flex; flex-direction: column; gap: 6px; }
+.mnav-label em { font-style: normal; font-family: var(--font-sans); font-size: 14px; letter-spacing: 0; color: rgba(255, 255, 255, .64); }
 .mnav li a small { font-family: var(--font-label); font-size: 12px; letter-spacing: .14em; color: var(--color-sky); }
 .mnav p { margin: 0; color: rgba(255, 255, 255, .64); font-size: 14px; }
 
@@ -120,12 +124,27 @@
 .haze-far { top: 26%; height: 52%; background-image: url(/images/hero/haze-far.webp); opacity: .42; }
 .haze-near { top: 44%; height: 56%; background-image: url(/images/hero/haze-near.webp); opacity: .32; }
 .hero-shade { position: absolute; inset: 0; background:
-  radial-gradient(ellipse 60% 42% at 50% 50%, rgba(20,40,63,.16), rgba(20,40,63,0) 70%),
+  radial-gradient(ellipse 48% 44% at 50% 52%, rgba(20,40,63,.26), rgba(20,40,63,0) 72%),
   linear-gradient(180deg, rgba(20,40,63,.38) 0%, rgba(20,40,63,.06) 26%, rgba(20,40,63,.04) 70%, rgba(20,40,63,.30) 100%); }
 .hero-veil { position: absolute; inset: 0; background: var(--color-cloud); pointer-events: none; }
 .hero-inner { position: relative; height: 100%; display: flex; align-items: center; justify-content: center; padding: 0 var(--gutter); }
-.hero-brand { margin: 0; font-family: var(--font-display); font-weight: 300; font-size: clamp(76px, 15.5vw, 236px); line-height: 1; letter-spacing: -.05em; color: #fff; text-shadow: 0 2px 40px rgba(20, 40, 63, .18); display: flex; }
-.hero-brand .ch { display: inline-block; will-change: transform, opacity; }
+.brand { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; color: #fff; }
+.brand-trail { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.brand-trail .trail { fill: none; stroke: rgba(255, 255, 255, .75); stroke-width: 1.2; stroke-linecap: round; opacity: 0; }
+.brand-trail .flyer { opacity: 0; }
+.brand-trail .flyer path { fill: rgba(255, 255, 255, .16); stroke: #fff; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+/* 회사 브랜드(상위) — 가장 크게 */
+.bs-company { margin: 0; display: flex; font-family: var(--font-display); font-weight: 300; font-size: clamp(50px, 8.2vw, 128px); line-height: 1; letter-spacing: -.045em; text-shadow: 0 2px 40px rgba(20, 40, 63, .2); will-change: transform; }
+.bs-company .ch { display: inline-block; }
+/* 관계: Anywhere ↓ presents ↓ TripAI */
+.bs-line { display: block; width: 1px; height: clamp(26px, 4.2vh, 44px); margin-top: clamp(18px, 2.6vh, 28px); background: linear-gradient(rgba(255, 255, 255, .15), rgba(255, 255, 255, .75)); }
+.bs-presents { margin: 12px 0 0; font-family: var(--font-label); font-size: 11px; font-weight: 500; letter-spacing: .34em; text-indent: .34em; text-transform: uppercase; color: rgba(255, 255, 255, .9); text-shadow: 0 1px 12px rgba(20, 40, 63, .35); }
+/* 서비스 브랜드(하위) — 회사명보다 작게, 종이비행기 심볼과 함께 */
+.bs-service { margin: clamp(14px, 2vh, 20px) 0 0; display: flex; align-items: center; gap: .26em; font-family: var(--font-display); font-weight: 300; font-size: clamp(32px, 4.3vw, 66px); line-height: 1.08; letter-spacing: -.035em; text-shadow: 0 2px 30px rgba(20, 40, 63, .2); }
+.bs-mark { display: inline-flex; }
+.bs-mark svg { width: .62em; height: .62em; fill: rgba(255, 255, 255, .16); stroke: #fff; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+.bs-name { display: inline-block; padding-right: .04em; }
+.bs-caption { margin: 14px 0 0; font-size: 15px; letter-spacing: -.01em; color: rgba(255, 255, 255, .92); text-shadow: 0 1px 14px rgba(20, 40, 63, .4); }
 
 /* ---------- About ---------- */
 .about { padding: clamp(96px, 12vw, 180px) 0 clamp(80px, 10vw, 150px); }
@@ -389,9 +408,11 @@
 
 @layer components {
 /* ---------- Brand Film ---------- */
-.film { background: var(--color-cloud); padding: clamp(32px, 5vw, 72px) 0 clamp(96px, 11vw, 160px); }
+.film { background: var(--color-cloud); padding: clamp(96px, 11vw, 168px) 0 clamp(96px, 11vw, 160px); }
+.film-title { color: var(--color-navy); }
+.film-sub { margin: -6px 0 0; font-size: clamp(18px, 1.7vw, 22px); font-weight: 500; letter-spacing: -.03em; color: var(--color-ink); }
 .film-head { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px; margin-bottom: clamp(40px, 5vw, 64px); }
-.film-head .body { max-width: 640px; }
+.film-head .body { max-width: 560px; }
 .label.center::after { content: ""; width: 28px; height: 1px; background: currentColor; opacity: .5; }
 .film-frame { max-width: 1100px; margin: 0 auto; }
 .film-text { max-width: 1100px; margin: 18px auto 0; font-size: 14px; color: var(--color-muted); }
@@ -468,7 +489,7 @@
   .hdr.is-scrolled:not(.is-dark) .hdr-bg { background: rgba(248, 250, 252, .92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 1px 0 rgba(20,40,63,.08); }
   .hdr.is-scrolled .hdr-in { height: 60px; }
   .hero { height: clamp(600px, 100svh, 860px); }
-  .hero-brand { font-size: clamp(64px, 22vw, 120px); }
+  .bs-caption { font-size: 14px; }
   .film-head { align-items: flex-start; text-align: left; }
   .film-head .body br { display: none; }
   .label.center::after { display: none; }

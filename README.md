@@ -1,10 +1,10 @@
-# TripAI — Official Corporate Website
+# Anywhere — Official Website
 
-> 당신의 취향이 여행이 되는 순간. — *Travel Beyond Expectations.*
+Anywhere(회사·팀 브랜드)의 공식 홈페이지입니다. TripAI는 Anywhere가 개발하고 있는 AI 기반 맞춤형 여행 추천 서비스이며, 홈페이지는 **Anywhere → TripAI** 관계를 중심으로 구성됩니다.
 
-TripAI 공식 기업 홈페이지입니다. 디자인 콘셉트는 **"Where Emotion Meets Intelligence"** — 사진이 여행의 감성을, 선과 점으로 이어지는 경로 모티프가 AI 기술을 담당합니다. 브랜드 필름(40초)이 About 다음에 배치되어 서비스의 추천 과정을 영상으로 보여주고, Our Approach 섹션이 그 과정을 이어서 설명합니다.
+**현재 공개 섹션**: Hero(Anywhere presents TripAI) → Project 01 · TripAI 브랜드 필름 → Footer
 
-**섹션 순서**: Hero → 01 About → 02 Brand Film → 03 The Problem → 04 Our Approach → 05 Technology → 06 Vision → 07 Contact → Footer
+나머지 섹션(About, The Problem, Our Approach, Technology, Vision, Contact)은 코드에 그대로 보존되어 있고 화면에서만 숨겨져 있습니다. `src/config/site.ts` 의 `sections` 값을 `true` 로 바꾸면 다시 노출됩니다. 이전 내비게이션 구성은 같은 파일의 `archivedNavItems` 에 남겨 두었습니다.
 
 ## 실행
 
@@ -40,7 +40,7 @@ Open Graph 이미지는 `public/og-image.jpg`(1200×630)를 교체하면 됩니�
 ```
 src/
   App.tsx                 섹션 조립
-  config/site.ts          브랜드 문구 · 내비게이션 · 연락처 설정
+  config/site.ts          회사(site)·서비스(service) 정보, 섹션 노출(sections), 내비게이션, 연락처 설정
   config/media.ts         브랜드 영상 파일 경로 · 포스터
   lib/gsap.ts             GSAP 등록, 미디어 조건(MQ)
   lib/useReveals.ts       data-reveal="lines|fade|clip" 진입 모션
@@ -71,7 +71,7 @@ src/
 
 | 섹션 | 모션 |
 | --- | --- |
-| Hero | 중앙에 TripAI 워드마크만 표시. 사진을 레이어로 분리해 비행 중인 창밖처럼 연출: 하늘의 아주 느린 전진·드리프트, 서로 다른 속도로 흐르는 구름 안개 2겹, 날개의 미세한 진동, 카메라 호흡. 데스크톱 스크롤 패럴랙스(하늘 > 날개) |
+| Hero | 한 번만 재생되고 최종 화면에서 멈추는 브랜드 시퀀스: Anywhere 등장(0–2초) → 위로 이동·축소, 연결선과 presents, 종이비행기 출발(2–4초) → 비행기가 지나간 자리에 TripAI 등장(4–6초) → 서비스 설명과 함께 최종 구성 유지(6–8초). 경로는 웹폰트 로딩 후 실제 배치를 측정해 만듭니다. 배경은 사진을 레이어로 분리해 비행 중인 창밖처럼 연출: 하늘의 아주 느린 전진·드리프트, 서로 다른 속도로 흐르는 구름 안개 2겹, 날개의 미세한 진동, 카메라 호흡. 데스크톱 스크롤 패럴랙스(하늘 > 날개) |
 | Brand Film | 진입 시 아래에서 fade + scale (1회). 재생은 사용자 조작으로만, 스크롤 모션과 독립 |
 | About | 사진 clip-path 리빌 + 프레임 내부 패럴랙스 |
 | Problem | 고정 무대에서 정보 과잉 → 개인화 부족 → 준비 복잡성 장면 전환 후 한 줄로 정리 |
