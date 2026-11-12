@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion, visuals } from '../config/site';
 import { gsap, useGSAP, MQ } from '../lib/gsap';
 import SectionLabel from './ui/SectionLabel';
+import LinkButton from './ui/LinkButton';
 
 /**
  * SECTION — OUR VISION (기업 비전)
@@ -11,6 +12,8 @@ import SectionLabel from './ui/SectionLabel';
 /** brief: 메인에서는 첫 문장만 표시 (전문은 /about) */
 export default function AnywhereVisionSection({ brief = false }: { brief?: boolean }) {
   const root = useRef<HTMLElement>(null);
+  const light = !visuals.visionPhoto && visuals.visionTone === 'light';
+  const cls = visuals.visionPhoto ? 'av' : light ? 'av is-light' : 'av is-plain';
 
   useGSAP(
     () => {
@@ -45,7 +48,7 @@ export default function AnywhereVisionSection({ brief = false }: { brief?: boole
   );
 
   return (
-    <section ref={root} className={`av${visuals.visionPhoto ? '' : ' is-plain'}`} id="our-vision" data-header="dark" aria-labelledby="av-title">
+    <section ref={root} className={cls} id="our-vision" data-header={light ? undefined : 'dark'} aria-labelledby="av-title">
       {visuals.visionPhoto && (
         <>
       <div className="av-media" aria-hidden="true">
@@ -65,6 +68,12 @@ export default function AnywhereVisionSection({ brief = false }: { brief?: boole
         </div>
         <div className="av-shade" aria-hidden="true" />
         </>
+      )}
+      {light && (
+        <div className="av-arcs" aria-hidden="true">
+          <span className="arc arc-1" />
+          <span className="arc arc-2" />
+        </div>
       )}
       <div className="wrap av-in">
         <SectionLabel className="av-label" reveal={false}>
@@ -86,6 +95,11 @@ export default function AnywhereVisionSection({ brief = false }: { brief?: boole
             </p>
           )}
         </div>
+        {light && brief && (
+          <div className="av-cta">
+            <LinkButton to="/about#vision">Our Vision 자세히 보기</LinkButton>
+          </div>
+        )}
       </div>
     </section>
   );

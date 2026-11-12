@@ -26,7 +26,7 @@ export default function AboutPage() {
           ))}
         </ul>
       </DetailSection>
-      <DetailSection label={c.vision.label} title={c.vision.title} tone="soft">
+      <DetailSection id="vision" label={c.vision.label} title={c.vision.title} tone="soft">
         {c.vision.body.map((p) => (
           <p key={p}>{p}</p>
         ))}

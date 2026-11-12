@@ -88,8 +88,10 @@ export const archivedNavItems: NavItem[] = [
  */
 /** 이미지 사용 설정 */
 export const visuals = {
-  /** Our Vision 배경 풍경 사진 (false = 사진 없이 네이비 그라데이션. 사진 코드는 보존) */
+  /** Our Vision 배경 풍경 사진 (false = 사진 없이. 사진 코드는 보존) */
   visionPhoto: false,
+  /** 사진이 없을 때의 Our Vision 톤: 'light' = 밝은 파스텔 + 곡선, 'navy' = 네이비 그라데이션 */
+  visionTone: 'light' as 'light' | 'navy',
 } as const;
 
 export const motion = {
