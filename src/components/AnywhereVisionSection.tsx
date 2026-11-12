@@ -8,7 +8,8 @@ import SectionLabel from './ui/SectionLabel';
  * 구름 위의 새벽 풍경. 스크롤에 따라 배경이 천천히 내려앉고(스크럽), 문구는 한 번 부드럽게 떠오릅니다.
  * Hero의 연출(문자 등장·종이비행기)과 겹치지 않도록 줄 단위 페이드와 배경 스크럽만 사용합니다.
  */
-export default function AnywhereVisionSection() {
+/** brief: 메인에서는 첫 문장만 표시 (전문은 /about) */
+export default function AnywhereVisionSection({ brief = false }: { brief?: boolean }) {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -74,10 +75,12 @@ export default function AnywhereVisionSection() {
         </h2>
         <div className="av-body">
           <p>우리는 여행자가 수많은 정보 속에서 고민하기보다, 자신에게 맞는 여행을 더 쉽게 발견할 수 있는 미래를 만들어가고자 합니다.</p>
-          <p>
-            TripAI를 통해 여행자의 경험과 AI 기술을 연결하고, 여행을 계획하는 과정부터 새로운 목적지를 발견하는 순간까지 더 나은 선택을
-            돕겠습니다.
-          </p>
+          {!brief && (
+            <p>
+              TripAI를 통해 여행자의 경험과 AI 기술을 연결하고, 여행을 계획하는 과정부터 새로운 목적지를 발견하는 순간까지 더 나은 선택을
+              돕겠습니다.
+            </p>
+          )}
         </div>
       </div>
     </section>

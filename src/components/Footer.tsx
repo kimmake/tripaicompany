@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { service, site, motion } from '../config/site';
 import { gsap, useGSAP, MQ } from '../lib/gsap';
 import { onAnchorClick } from '../lib/scroll';
+import { Link } from '../lib/router';
 import { ArrowUp } from './ui/Icons';
 
 /**
@@ -45,7 +46,7 @@ export default function Footer() {
         <p className="ft-sub">우리의 여정은 계속됩니다.</p>
 
         <div className="ft-brand">
-          <a className="ft-logo" href="#top" onClick={(e) => onAnchorClick(e)} aria-label={`${site.name} 맨 위로`}>
+          <Link className="ft-logo" to="/" aria-label={`${site.name} 홈으로`}>
             <img
               src="/images/brand/anywhere-logo-800.webp"
               srcSet="/images/brand/anywhere-logo-800.webp 800w, /images/brand/anywhere-logo-1600.webp 1600w"
@@ -56,11 +57,11 @@ export default function Footer() {
               loading="lazy"
               decoding="async"
             />
-          </a>
-          <a className="ft-service" href="#film" onClick={(e) => onAnchorClick(e)}>
+          </Link>
+          <Link className="ft-service" to="/tripai">
             <span>Core Service</span>
             {service.name}
-          </a>
+          </Link>
         </div>
 
         <div className="ft-base">
@@ -68,9 +69,9 @@ export default function Footer() {
             © {year} {site.name}
           </span>
           <nav aria-label="푸터 메뉴" className="ft-links">
-            <a href="#film" onClick={(e) => onAnchorClick(e)}>
-              {service.name}
-            </a>
+            <Link to="/about">About</Link>
+            <Link to="/tripai">{service.name}</Link>
+            <Link to="/team">Team</Link>
             <a href="#top" onClick={(e) => onAnchorClick(e)}>
               Back to top
               <ArrowUp />

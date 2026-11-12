@@ -7,7 +7,7 @@ export function scrollToId(id: string) {
   if (!target) return;
   const top = id === 'top' ? 0 : target.getBoundingClientRect().top + window.scrollY;
   window.scrollTo({ top, behavior: prefersReduced() ? 'auto' : 'smooth' });
-  history.replaceState(null, '', id === 'top' ? location.pathname : `#${id}`);
+  history.replaceState(history.state, '', id === 'top' ? location.pathname : `${location.pathname}#${id}`);
   // 키보드 사용자를 위해 포커스를 섹션으로 이동 (스크롤은 이미 처리됨)
   if (id !== 'top') {
     if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');

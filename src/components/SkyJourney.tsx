@@ -4,6 +4,7 @@ import { createCloudFly, type CloudFly, type CloudFlyState } from '../lib/cloudF
 import { createFlightSky, type FlightSky } from '../lib/flightSky';
 import HeroSection from './HeroSection';
 import SectionLabel from './ui/SectionLabel';
+import LinkButton from './ui/LinkButton';
 
 /**
  * Hero → 구름 속 → 구름 위(About Anywhere) 로 이어지는 하나의 하늘 여행.
@@ -99,8 +100,8 @@ export default function SkyJourney() {
           .fromTo(q('.ja-media'), { scale: 1.16, yPercent: 5 }, { scale: 1, yPercent: 0, duration: 42, ease: 'power2.out' }, 50)
           .fromTo(q('.ja-label'), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 6 }, 76)
           .fromTo(q('.ja-title .ln'), { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 9, stagger: 2.5 }, 78)
-          .fromTo(q('.ja-sub'), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 7 }, 86)
-          .fromTo(q('.ja-body'), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 7 }, 90);
+          .fromTo(q('.ja-body'), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 7 }, 86)
+          .fromTo(q('.ja-cta'), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 7 }, 91);
         draw();
 
         return () => {
@@ -140,10 +141,12 @@ export default function SkyJourney() {
               <span className="ln">여행을 바라보는</span>
               <span className="ln">새로운 시선.</span>
             </h2>
-            <p className="ja-sub">같은 목적지라도, 모두의 여행은 다르니까.</p>
             <p className="ja-body">
               Anywhere는 AI 기술과 실제 여행 경험을 연결해, 각자에게 어울리는 여행을 더 쉽게 발견할 수 있도록 돕는 트래블테크 스타트업입니다.
             </p>
+            <div className="ja-cta">
+              <LinkButton to="/about">Discover Anywhere</LinkButton>
+            </div>
           </div>
         </section>
         <canvas className="journey-fog" aria-hidden="true" />

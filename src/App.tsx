@@ -1,39 +1,32 @@
 import Header from './components/Header';
-import HeroSection from './components/HeroSection';
-import SkyJourney from './components/SkyJourney';
-import AboutSection from './components/AboutSection';
-import AnywhereAboutSection from './components/AnywhereAboutSection';
-import AnywhereVisionSection from './components/AnywhereVisionSection';
-import StorySection from './components/StorySection';
-import BrandFilmSection from './components/BrandFilmSection';
-import ProblemSection from './components/ProblemSection';
-import ApproachSection from './components/ApproachSection';
-import TechnologySection from './components/TechnologySection';
-import VisionSection from './components/VisionSection';
-import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
-import { sections } from './config/site';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import TripAIPage from './pages/TripAIPage';
+import TeamPage from './pages/TeamPage';
+import NotFoundPage from './pages/NotFoundPage';
+import { usePath, useRouteScroll } from './lib/router';
 import { useReveals } from './lib/useReveals';
 
+/** 경로별 페이지 — 직접 URL 접근·새로고침·뒤로 가기 지원 (배포 서버는 index.html 폴백 필요) */
+const routes: Record<string, () => React.ReactElement> = {
+  '/': HomePage,
+  '/about': AboutPage,
+  '/tripai': TripAIPage,
+  '/team': TeamPage,
+};
+
 export default function App() {
+  const path = usePath();
+  const Page = routes[path] ?? NotFoundPage;
   useReveals();
+  useRouteScroll(path);
   return (
-    <div className="site">
+    <div className="site" data-page={path === '/' ? 'home' : 'detail'}>
       <a className="skip-link" href="#main">본문 바로가기</a>
-      <Header />
-      <main id="main">
-        {sections.skyJourney ? <SkyJourney /> : <HeroSection />}
-        {/* 아래 섹션은 config/site.ts 의 sections 설정으로 노출 여부를 정합니다 (숨김 = 렌더링하지 않음, 코드는 보존) */}
-        {sections.about && <AboutSection />}
-        {sections.aboutAnywhere && <AnywhereAboutSection />}
-        {sections.brandFilm && <BrandFilmSection />}
-        {sections.story && <StorySection />}
-        {sections.visionAnywhere && <AnywhereVisionSection />}
-        {sections.problem && <ProblemSection />}
-        {sections.approach && <ApproachSection />}
-        {sections.technology && <TechnologySection />}
-        {sections.vision && <VisionSection />}
-        {sections.contact && <ContactSection />}
+      <Header path={path} />
+      <main id="main" key={path}>
+        <Page />
       </main>
       <Footer />
     </div>

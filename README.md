@@ -2,8 +2,17 @@
 
 Anywhere의 공식 기업 홈페이지입니다. **Anywhere**는 AI 기술로 더 나은 여행 경험을 만드는 트래블테크 스타트업이고, **TripAI**는 Anywhere의 첫 번째이자 핵심 서비스(AI 기반 맞춤형 여행 추천 플랫폼)입니다.
 
-**현재 공개 섹션**: Hero(Anywhere 로고 + 비행 중인 하늘) → 구름 통과 전환 → → About Anywhere(`#anywhere`) → Brand Film · Service 01 TripAI(`#film`) → Our Story & Journey(`#story`) → Our Vision(`#our-vision`) → Footer
-**내비게이션**: About · TripAI · Vision
+**페이지 구성** (경량 라우터 `src/lib/router.tsx`, History API · 직접 URL 접근 · 새로고침 · 뒤로/앞으로 가기 · 페이지별 title/description)
+
+| 경로 | 내용 |
+| --- | --- |
+| `/` | Hero → 구름 통과 → About(Discover Anywhere) → TripAI 필름(Explore TripAI) → Our Team(Meet Our Team) → Our Vision(요약) → Footer |
+| `/about` | 회사 소개 · 가치 · Our Story & Journey(시작 배경) · Our Vision 전문 |
+| `/tripai` | 서비스 소개 · 소개 영상 · 개발 중인 주요 기능 · 추천 방식 · 경험 기반 정보 · 앞으로의 방향 · 서비스 바로가기 |
+| `/team` | 팀 공통 소개 (+ `src/content/team.ts` 에 팀원 정보가 있을 때만 팀원 목록) |
+
+문구: `src/content/pages.ts`, `src/content/story.ts`(임시 브랜드 스토리), `src/content/team.ts`(현재 비어 있음).
+배포: 모든 경로가 `index.html`로 돌아가야 합니다 — Vercel은 `vercel.json`, Netlify는 `public/_redirects` 포함.
 
 섹션 노출은 `src/config/site.ts` 의 `sections` 로 관리합니다. 이전 TripAI 서비스 홈페이지용 섹션(about, problem, approach, technology, vision, contact)은 코드에 그대로 보존되어 있고 `false` 로 숨겨져 있습니다. 새 섹션은 `aboutAnywhere`, `visionAnywhere` 키로 같은 방식으로 켜고 끕니다. (보존된 `about`·`vision` 섹션은 `#about`·`#vision` id를 쓰므로 새 섹션과 겹치지 않습니다.) 이전 내비게이션 구성은 `archivedNavItems` 에 남겨 두었습니다.
 

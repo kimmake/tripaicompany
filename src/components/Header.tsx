@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { navItems, sections, service, site } from '../config/site';
+import { pageNav, sections, service, site } from '../config/site';
 import { onAnchorClick } from '../lib/scroll';
+import { Link, navigate } from '../lib/router';
 import { gsap, useGSAP, MQ } from '../lib/gsap';
 import Logo from './ui/Logo';
 import { ArrowRight } from './ui/Icons';
 
-export default function Header() {
+export default function Header({ path }: { path: string }) {
+  const isHome = path === '/';
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState<string | null>(null);
   const [dark, setDark] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);
@@ -22,23 +23,6 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // 현재 보고 있는 섹션 표시
-  useEffect(() => {
-    const sections = navItems
-      .map((n) => document.getElementById(n.id))
-      .filter((el): el is HTMLElement => Boolean(el));
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { rootMargin: '-45% 0px -50% 0px' },
-    );
-    sections.forEach((s) => io.observe(s));
-    return () => io.disconnect();
-  }, []);
-
   // 딥 네이비·풍경 섹션 위에서는 헤더도 어두운 톤으로 전환
   useEffect(() => {
     const darkSections = Array.from(document.querySelectorAll<HTMLElement>('[data-header="dark"]'));
@@ -50,9 +34,10 @@ export default function Header() {
       },
       { rootMargin: '0px 0px -92% 0px' },
     );
+    setDark(false);
     darkSections.forEach((s) => io.observe(s));
     return () => io.disconnect();
-  }, []);
+  }, [path]);
 
   // 모바일 메뉴: 스크롤 잠금, Esc 닫기, 포커스 이동
   useEffect(() => {
@@ -111,24 +96,25 @@ export default function Header() {
   }, [open]);
 
   const close = () => setOpen(false);
+  // 로고: 메인이면 맨 위로, 다른 페이지면 메인으로
+  const goHome = (e: React.MouseEvent<HTMLAnchorElement>, after?: () => void) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    after?.();
+    navigate('/');
+  };
 
   return (
     <>
-      <header ref={headerRef} className={`hdr${scrolled ? ' is-scrolled' : ''}${dark ? ' is-dark' : ''}`}>
+      <header ref={headerRef} className={`hdr${scrolled || !isHome ? ' is-scrolled' : ''}${dark ? ' is-dark' : ''}`}>
         <div className="hdr-bg" aria-hidden="true" />
         <div className="wrap hdr-in">
-          <Logo onClick={(e) => onAnchorClick(e)} />
+          <Logo href="/" onClick={(e) => goHome(e)} />
           <nav className="nav" aria-label="주요 메뉴">
-            {navItems.map((n) => (
-              <a
-                key={n.id}
-                href={`#${n.id}`}
-                aria-current={active === n.id ? 'true' : undefined}
-                onClick={(e) => onAnchorClick(e)}
-              >
-                {n.kicker && <span className="nav-k">{n.kicker}</span>}
+            {pageNav.map((n) => (
+              <Link key={n.to} to={n.to} aria-current={path === n.to ? 'page' : undefined}>
                 {n.label}
-              </a>
+              </Link>
             ))}
           </nav>
           {sections.contact && (
@@ -156,7 +142,7 @@ export default function Header() {
       {open && (
         <div ref={panelRef} id="mobile-menu" className="mnav" role="dialog" aria-modal="true" aria-label="메뉴">
           <div className="mnav-top">
-            <Logo onClick={(e) => onAnchorClick(e, close)} />
+            <Logo href="/" onClick={(e) => goHome(e, close)} />
             <button className="burger" style={{ display: 'inline-flex' }} type="button" aria-label="메뉴 닫기" onClick={close}>
               <svg viewBox="0 0 18 18" aria-hidden="true">
                 <path d="M4 4l10 10M14 4L4 14" />
@@ -164,15 +150,15 @@ export default function Header() {
             </button>
           </div>
           <ul>
-            {navItems.map((n, i) => (
-              <li key={n.id}>
-                <a href={`#${n.id}`} onClick={(e) => onAnchorClick(e, close)}>
+            {pageNav.map((n, i) => (
+              <li key={n.to}>
+                <Link to={n.to} onNavigate={close} aria-current={path === n.to ? 'page' : undefined}>
                   <small>{String(i + 1).padStart(2, '0')}</small>
                   <span className="mnav-label">
                     {n.label}
                     {n.note && <em>{n.note}</em>}
                   </span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

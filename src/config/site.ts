@@ -38,7 +38,10 @@ export const sections = {
   /** 이전 About Anywhere 섹션 (타이포그래피형) — skyJourney로 대체되어 보존·숨김 */
   aboutAnywhere: false,
   /** Our Story & Journey — Anywhere의 이야기와 여정 (id: story, 문구: src/content/story.ts) */
-  story: true,
+  /** 메인에서는 숨김 — /about 페이지에서 사용 */
+  story: false,
+  /** 메인 Our Team 소개 (자세한 내용은 /team) */
+  teamTeaser: true,
   /** Our Vision — 기업 비전 (id: our-vision) */
   visionAnywhere: true,
   about: false,
@@ -51,6 +54,15 @@ export const sections = {
 } as const;
 
 export type NavItem = { id: string; label: string; kicker?: string; note?: string };
+export type PageNavItem = { to: string; label: string; note?: string };
+
+/** 상단 내비게이션 — 실제 페이지 이동 */
+export const pageNav: PageNavItem[] = [
+  { to: '/', label: 'Home', note: '비행하는 하늘에서 시작하는 Anywhere' },
+  { to: '/about', label: 'About', note: 'Anywhere 소개' },
+  { to: '/tripai', label: 'TripAI', note: 'Anywhere의 첫 번째 서비스' },
+  { to: '/team', label: 'Team', note: '여행의 새로운 경험을 만드는 사람들' },
+];
 
 /** 현재 공개된 섹션 기준 내비게이션 */
 export const navItems: NavItem[] = [
