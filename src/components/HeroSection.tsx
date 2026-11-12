@@ -13,7 +13,7 @@ const SIZES = '(orientation: portrait) 160vh, 100vw';
  * SECTION 01 — HERO · Anywhere × TripAI
  * 배경: 비행기 창밖처럼 레이어로 분리된 하늘 · 구름 안개 · 날개의 느린 움직임 (반복, 초기화 없음)
  * 전경: 한 번만 재생되고 최종 화면에서 멈추는 브랜드 시퀀스
- *   Scene 01 (0–2s)  Anywhere 등장
+ *   Scene 01 (0–2s)  Anywhere 로고 등장 (왼쪽 → 오른쪽으로 드러남)
  *   Scene 02 (2–4s)  Anywhere가 위로 이동·축소 → 연결선 + presents → 종이비행기 출발
  *   Scene 03 (4–6s)  종이비행기가 지나간 자리에 TripAI 등장 (심볼은 비행기가 지나간 위치에 남음)
  *   Scene 04 (6–8s)  Anywhere ↓ presents ↓ TripAI + 서비스 설명 — 스크롤 전까지 유지
@@ -143,11 +143,17 @@ export default function HeroSection() {
             </g>
           </svg>
           <h1 className="bs-company" id="hero-title" aria-label={`${site.name} presents ${service.name}`}>
-            {site.name.split('').map((c, i) => (
-              <span className="ch" key={i} aria-hidden="true">
-                {c}
-              </span>
-            ))}
+            <img
+              className="bs-logo"
+              src="/images/brand/anywhere-logo-800.webp"
+              srcSet="/images/brand/anywhere-logo-800.webp 800w, /images/brand/anywhere-logo-1600.webp 1600w"
+              sizes="(max-width: 767px) 260px, 560px"
+              alt=""
+              width={1745}
+              height={431}
+              decoding="async"
+              fetchPriority="high"
+            />
           </h1>
           <span className="bs-line" aria-hidden="true" />
           <p className="bs-presents" aria-hidden="true">
@@ -214,7 +220,7 @@ function buildBrandSequence(hero: HTMLElement, brand: HTMLElement) {
 
   gsap.set(brand, { autoAlpha: 1 });
   gsap.set(company, { y: dy, scale: s0, transformOrigin: '50% 50%' });
-  gsap.set(q('.bs-company .ch'), { opacity: 0, y: 24 });
+  gsap.set(q('.bs-logo'), { opacity: 0, y: 18, clipPath: 'inset(-10% 100% -10% 0%)' });
   gsap.set(q('.bs-line'), { scaleY: 0, transformOrigin: '50% 0%' });
   gsap.set([presents, q('.bs-caption')[0]], { opacity: 0, y: 10 });
   gsap.set(mark, { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' });
@@ -228,7 +234,9 @@ function buildBrandSequence(hero: HTMLElement, brand: HTMLElement) {
     gsap
       .timeline({ defaults: { ease: 'power3.out' } })
       // Scene 01 — Anywhere
-      .to(q('.bs-company .ch'), { opacity: 1, y: 0, duration: 1.5, stagger: { each: 0.06, from: 'center' } }, 0.5)
+      // 로고는 비행 궤적 방향(왼쪽 → 오른쪽)으로 드러남
+      .to(q('.bs-logo'), { opacity: 1, y: 0, duration: 1.2 }, 0.5)
+      .to(q('.bs-logo'), { clipPath: 'inset(-10% 0% -10% 0%)', duration: 1.6, ease: 'power2.inOut' }, 0.5)
       // Scene 02 — 위로 이동·축소, 연결선과 presents, 비행기 출발
       .to(company, { y: 0, scale: 1, duration: 1.4, ease: 'power3.inOut' }, 2.0)
       .to(q('.bs-line'), { scaleY: 1, duration: 0.7, ease: 'power2.out' }, 2.9)
@@ -245,6 +253,6 @@ function buildBrandSequence(hero: HTMLElement, brand: HTMLElement) {
       .to(trail, { opacity: 0, duration: 1.2, ease: 'power2.out' }, across0 + 0.4)
       // Scene 04 — 최종 구성 (유지)
       .to(q('.bs-caption'), { opacity: 1, y: 0, duration: 1.1 }, 6.0)
-      .set(name, { clearProps: 'clipPath' })
+      .set([name, q('.bs-logo')[0]], { clearProps: 'clipPath' })
   );
 }

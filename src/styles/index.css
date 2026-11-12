@@ -134,8 +134,9 @@
 .brand-trail .flyer { opacity: 0; }
 .brand-trail .flyer path { fill: rgba(255, 255, 255, .16); stroke: #fff; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 /* 회사 브랜드(상위) — 가장 크게 */
-.bs-company { margin: 0; display: flex; font-family: var(--font-display); font-weight: 300; font-size: clamp(50px, 8.2vw, 128px); line-height: 1; letter-spacing: -.045em; text-shadow: 0 2px 40px rgba(20, 40, 63, .2); will-change: transform; }
-.bs-company .ch { display: inline-block; }
+.bs-company { margin: 0; display: flex; font-family: var(--font-display); font-weight: 300; font-size: clamp(50px, 8.2vw, 128px); line-height: 1; letter-spacing: -.045em; will-change: transform; filter: drop-shadow(0 2px 22px rgba(20, 40, 63, .28)); } /* 그림자는 부모에 적용 → 로고 와이프(clip) 중에도 그림자 경계가 잘리지 않음 */
+/* 회사 로고 이미지 — h1의 font-size(em) 기준으로 크기를 정해 기존 레이아웃·애니메이션 측정을 그대로 사용 */
+.bs-logo { display: block; width: 4.4em; height: auto; aspect-ratio: 1745 / 431; user-select: none; -webkit-user-drag: none; }
 /* 관계: Anywhere ↓ presents ↓ TripAI */
 .bs-line { display: block; width: 1px; height: clamp(26px, 4.2vh, 44px); margin-top: clamp(18px, 2.6vh, 28px); background: linear-gradient(rgba(255, 255, 255, .15), rgba(255, 255, 255, .75)); }
 .bs-presents { margin: 12px 0 0; font-family: var(--font-label); font-size: 11px; font-weight: 500; letter-spacing: .34em; text-indent: .34em; text-transform: uppercase; color: rgba(255, 255, 255, .9); text-shadow: 0 1px 12px rgba(20, 40, 63, .35); }

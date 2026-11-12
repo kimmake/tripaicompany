@@ -105,6 +105,11 @@ ffmpeg -i TripAI_1080p30.mp4 -vf scale=1280:720 -c:v libx264 -preset slow -crf 2
 ```
 
 
+## 브랜드 로고 (`public/images/brand`)
+
+- `anywhere-logo-800.webp`, `anywhere-logo-1600.webp`: Anywhere 공식 로고(흰색 워드마크 + 하늘색 종이비행기, 투명 배경). 제공된 원본에서 배경의 미세한 알파 노이즈만 제거하고 여백을 잘라냈습니다(비율 1745:431).
+- Hero의 브랜드 시퀀스에서 사용하며, 로고는 왼쪽에서 오른쪽(비행 궤적 방향)으로 드러납니다.
+
 ## Hero 레이어 (`public/images/hero`)
 
 원본 사진 1장(Unsplash)을 분리해 만든 레이어입니다. 모든 레이어는 같은 크기(2400×1594, 1280 버전 포함)라 정확히 겹칩니다.
