@@ -129,7 +129,10 @@
 .hero-veil { position: absolute; inset: 0; background: var(--color-cloud); pointer-events: none; }
 .hero-inner { position: relative; height: 100%; display: flex; align-items: center; justify-content: center; padding: 0 var(--gutter); }
 /* 중앙 로고 — 애니메이션 없이 고정. 밝은 하늘 위에서도 또렷하도록 부드러운 그림자 */
-.hero-title { margin: 0; line-height: 0; filter: drop-shadow(0 2px 24px rgba(20, 40, 63, .32)) drop-shadow(0 1px 3px rgba(20, 40, 63, .18)); }
+.hero-title { position: relative; isolation: isolate; margin: 0; line-height: 0; }
+/* 로고 대비용 그림자: CSS filter(drop-shadow)는 일부 모바일 GPU에서 사각형 레이어 경계가 보여서,
+   가장자리가 완전히 투명해지는 방사형 그라데이션으로 대체 */
+.hero-title::before { content: ""; position: absolute; inset: -70% -18%; z-index: -1; pointer-events: none; background: radial-gradient(closest-side, rgba(20, 40, 63, .26), rgba(20, 40, 63, .12) 55%, rgba(20, 40, 63, 0) 100%); }
 .hero-logo { display: block; width: clamp(260px, 40vw, 620px); height: auto; aspect-ratio: 1745 / 431; user-select: none; -webkit-user-drag: none; }
 /* WebGL 하늘: 첫 프레임이 그려진 뒤 정지 이미지 위로 페이드인. 이후 안개 텍스처(대체용)는 숨김 */
 .sky-gl { opacity: 0; transition: opacity 1.2s ease; }
