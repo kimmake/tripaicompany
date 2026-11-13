@@ -651,8 +651,10 @@
 .ph-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(248, 250, 252, .6) 0%, rgba(248, 250, 252, .25) 45%, rgba(248, 250, 252, .1) 70%, var(--color-cloud) 100%); }
 .ph-in { position: relative; padding-top: 160px; padding-bottom: clamp(56px, 7vw, 96px); display: flex; flex-direction: column; gap: 20px; }
 .page-hero .ph-label { color: var(--color-sky-ink); }
-.ph-back { position: absolute; left: 0; right: 0; top: 84px; z-index: 1; }
-.back-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px 0 12px; border: 1px solid rgba(20, 40, 63, .18); border-radius: 999px; background: rgba(248, 250, 252, .7); color: var(--color-navy); text-decoration: none; font-family: var(--font-label); font-size: 14px; font-weight: 500; transition: background-color .3s, border-color .3s; }
+/* 스크롤해도 메뉴 바로 아래에 고정되어 따라옴 (언제든 메인으로) */
+.ph-back { position: fixed; left: 0; right: 0; top: 80px; z-index: 40; pointer-events: none; }
+.ph-back .back-link { pointer-events: auto; }
+.back-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px 0 12px; border: 1px solid rgba(20, 40, 63, .14); border-radius: 999px; background: rgba(248, 250, 252, .95); -webkit-backdrop-filter: blur(12px) saturate(1.4); backdrop-filter: blur(12px) saturate(1.4); box-shadow: 0 8px 24px -14px rgba(20, 40, 63, .35); color: var(--color-navy); text-decoration: none; font-family: var(--font-label); font-size: 14px; font-weight: 500; transition: background-color .3s, border-color .3s; }
 .back-link:hover { background: rgba(248, 250, 252, .95); border-color: rgba(20, 40, 63, .32); }
 .back-ico { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.6; transform: rotate(180deg); }
 .ph-title { margin: 0; font-weight: 600; font-size: clamp(38px, 5.4vw, 80px); line-height: 1.14; letter-spacing: -.045em; }
